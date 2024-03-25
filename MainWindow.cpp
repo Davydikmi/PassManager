@@ -8,6 +8,8 @@
 
 
 #include "MainWindow.h"
+#include "ChangeWindow.h"
+#include "createWindow.h"
 
 using namespace System;
 using namespace System::Windows::Forms;
@@ -18,7 +20,7 @@ int main(array<String^>^ args)
 {
 	Application::SetCompatibleTextRenderingDefault(false);
 	Application::EnableVisualStyles();
-	PasswordManager::MainWindow window;
+	PasswordManager::createWindow window;
 	Application::Run(% window);
 
 }
