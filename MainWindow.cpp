@@ -20,7 +20,7 @@ int main(array<String^>^ args)
 {
 	Application::SetCompatibleTextRenderingDefault(false);
 	Application::EnableVisualStyles();
-	PasswordManager::createWindow window;
+	PasswordManager::MainWindow window;
 	Application::Run(% window);
 
 }
