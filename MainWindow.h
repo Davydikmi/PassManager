@@ -1,4 +1,6 @@
 #pragma once
+#include "createWindow.h"
+#include "ChangeWindow.h"
 
 namespace PasswordManager {
 
@@ -8,6 +10,7 @@ namespace PasswordManager {
 	using namespace System::Windows::Forms;
 	using namespace System::Data;
 	using namespace System::Drawing;
+
 
 	/// <summary>
 	/// Сводка для MainWindow
@@ -34,7 +37,11 @@ namespace PasswordManager {
 				delete components;
 			}
 		}
-	private: System::Windows::Forms::ListView^ ListView1;
+	private: System::Windows::Forms::ListView^ listview;
+	protected:
+
+	protected:
+
 	protected:
 
 	private: System::Windows::Forms::Button^ create_button;
@@ -67,7 +74,7 @@ namespace PasswordManager {
 		/// </summary>
 		void InitializeComponent(void)
 		{
-			this->ListView1 = (gcnew System::Windows::Forms::ListView());
+			this->listview = (gcnew System::Windows::Forms::ListView());
 			this->service = (gcnew System::Windows::Forms::ColumnHeader());
 			this->login = (gcnew System::Windows::Forms::ColumnHeader());
 			this->password = (gcnew System::Windows::Forms::ColumnHeader());
@@ -79,23 +86,22 @@ namespace PasswordManager {
 			this->reset_button = (gcnew System::Windows::Forms::Button());
 			this->SuspendLayout();
 			// 
-			// ListView1
+			// listview
 			// 
-			this->ListView1->Columns->AddRange(gcnew cli::array< System::Windows::Forms::ColumnHeader^  >(5) {
+			this->listview->Columns->AddRange(gcnew cli::array< System::Windows::Forms::ColumnHeader^  >(5) {
 				this->service, this->login,
 					this->password, this->create_date, this->change_date
 			});
-			this->ListView1->Font = (gcnew System::Drawing::Font(L"Calibri", 11.25F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
+			this->listview->Font = (gcnew System::Drawing::Font(L"Calibri", 11.25F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(204)));
-			this->ListView1->HideSelection = false;
-			this->ListView1->Location = System::Drawing::Point(14, 12);
-			this->ListView1->Margin = System::Windows::Forms::Padding(4, 3, 4, 3);
-			this->ListView1->Name = L"ListView1";
-			this->ListView1->Size = System::Drawing::Size(508, 579);
-			this->ListView1->TabIndex = 0;
-			this->ListView1->UseCompatibleStateImageBehavior = false;
-			this->ListView1->View = System::Windows::Forms::View::Details;
-			this->ListView1->SelectedIndexChanged += gcnew System::EventHandler(this, &MainWindow::listView1_SelectedIndexChanged);
+			this->listview->HideSelection = false;
+			this->listview->Location = System::Drawing::Point(14, 12);
+			this->listview->Margin = System::Windows::Forms::Padding(4, 3, 4, 3);
+			this->listview->Name = L"listview";
+			this->listview->Size = System::Drawing::Size(508, 579);
+			this->listview->TabIndex = 0;
+			this->listview->UseCompatibleStateImageBehavior = false;
+			this->listview->View = System::Windows::Forms::View::Details;
 			// 
 			// service
 			// 
@@ -134,6 +140,7 @@ namespace PasswordManager {
 			this->create_button->TabIndex = 1;
 			this->create_button->Text = L"Создать";
 			this->create_button->UseVisualStyleBackColor = true;
+			this->create_button->Click += gcnew System::EventHandler(this, &MainWindow::create_button_Click);
 			// 
 			// change_button
 			// 
@@ -147,6 +154,7 @@ namespace PasswordManager {
 			this->change_button->TabIndex = 2;
 			this->change_button->Text = L"Изменить";
 			this->change_button->UseVisualStyleBackColor = true;
+			this->change_button->Click += gcnew System::EventHandler(this, &MainWindow::change_button_Click);
 			// 
 			// delete_button
 			// 
@@ -173,6 +181,7 @@ namespace PasswordManager {
 			this->reset_button->TabIndex = 4;
 			this->reset_button->Text = L"Сброс";
 			this->reset_button->UseVisualStyleBackColor = true;
+			this->reset_button->Click += gcnew System::EventHandler(this, &MainWindow::reset_button_Click);
 			// 
 			// MainWindow
 			// 
@@ -183,7 +192,7 @@ namespace PasswordManager {
 			this->Controls->Add(this->delete_button);
 			this->Controls->Add(this->change_button);
 			this->Controls->Add(this->create_button);
-			this->Controls->Add(this->ListView1);
+			this->Controls->Add(this->listview);
 			this->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(204)));
 			this->FormBorderStyle = System::Windows::Forms::FormBorderStyle::FixedSingle;
@@ -196,7 +205,21 @@ namespace PasswordManager {
 
 		}
 #pragma endregion
-	private: System::Void listView1_SelectedIndexChanged(System::Object^ sender, System::EventArgs^ e) {
-	}
+	
+		private: System::Void create_button_Click(System::Object^ sender, System::EventArgs^ e) 
+		{
+			createWindow^ createwin = gcnew createWindow();
+			createwin->ShowDialog();
+		}
+		private: System::Void change_button_Click(System::Object^ sender, System::EventArgs^ e) 
+		{
+			ChangeWindow^ changewin = gcnew ChangeWindow();
+			changewin->ShowDialog();
+		}
+		private: System::Void reset_button_Click(System::Object^ sender, System::EventArgs^ e) 
+		{
+			System::Windows::Forms::DialogResult result = MessageBox::Show("Вы уверены, что хотите очистить базу данных?", "Подтверждение", MessageBoxButtons::YesNo, MessageBoxIcon::Asterisk);
+			if (result == System::Windows::Forms::DialogResult::Yes) listview->Items->Clear();
+		}
 };
 }

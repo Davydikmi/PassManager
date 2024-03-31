@@ -104,7 +104,7 @@ namespace PasswordManager {
 			// 
 			this->password_textbox->Font = (gcnew System::Drawing::Font(L"Calibri Light", 12, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(204)));
-			this->password_textbox->Location = System::Drawing::Point(97, 169);
+			this->password_textbox->Location = System::Drawing::Point(97, 166);
 			this->password_textbox->Name = L"password_textbox";
 			this->password_textbox->Size = System::Drawing::Size(246, 27);
 			this->password_textbox->TabIndex = 13;
@@ -144,7 +144,7 @@ namespace PasswordManager {
 			this->password_label->AutoSize = true;
 			this->password_label->Font = (gcnew System::Drawing::Font(L"Calibri Light", 14.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(204)));
-			this->password_label->Location = System::Drawing::Point(12, 173);
+			this->password_label->Location = System::Drawing::Point(16, 166);
 			this->password_label->Name = L"password_label";
 			this->password_label->Size = System::Drawing::Size(79, 23);
 			this->password_label->TabIndex = 9;
@@ -155,7 +155,7 @@ namespace PasswordManager {
 			this->login_label->AutoSize = true;
 			this->login_label->Font = (gcnew System::Drawing::Font(L"Calibri Light", 14.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(204)));
-			this->login_label->Location = System::Drawing::Point(12, 131);
+			this->login_label->Location = System::Drawing::Point(16, 127);
 			this->login_label->Name = L"login_label";
 			this->login_label->Size = System::Drawing::Size(66, 23);
 			this->login_label->TabIndex = 8;
@@ -166,7 +166,7 @@ namespace PasswordManager {
 			this->service_label->AutoSize = true;
 			this->service_label->Font = (gcnew System::Drawing::Font(L"Calibri Light", 14.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(204)));
-			this->service_label->Location = System::Drawing::Point(12, 91);
+			this->service_label->Location = System::Drawing::Point(16, 87);
 			this->service_label->Name = L"service_label";
 			this->service_label->Size = System::Drawing::Size(75, 23);
 			this->service_label->TabIndex = 7;
@@ -290,11 +290,10 @@ namespace PasswordManager {
 			// comboBox1
 			// 
 			this->comboBox1->FormattingEnabled = true;
-			this->comboBox1->Items->AddRange(gcnew cli::array< System::Object^  >(47) {
+			this->comboBox1->Items->AddRange(gcnew cli::array< System::Object^  >(37) {
 				L"4", L"5", L"6", L"7", L"8", L"9", L"10", L"11",
 					L"12", L"13", L"14", L"15", L"16", L"17", L"18", L"19", L"20", L"21", L"22", L"23", L"24", L"25", L"26", L"27", L"28", L"29",
-					L"30", L"31", L"32", L"33", L"34", L"35", L"36", L"37", L"38", L"39", L"40", L"41", L"42", L"43", L"44", L"45", L"46", L"47",
-					L"48", L"49", L"50"
+					L"30", L"31", L"32", L"33", L"34", L"35", L"36", L"37", L"38", L"39", L"40"
 			});
 			this->comboBox1->Location = System::Drawing::Point(126, 84);
 			this->comboBox1->Name = L"comboBox1";

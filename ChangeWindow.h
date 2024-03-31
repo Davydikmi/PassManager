@@ -156,6 +156,7 @@ namespace PasswordManager {
 			this->Controls->Add(this->password_label);
 			this->Controls->Add(this->login_label);
 			this->Controls->Add(this->service_label);
+			this->FormBorderStyle = System::Windows::Forms::FormBorderStyle::FixedSingle;
 			this->Name = L"ChangeWindow";
 			this->StartPosition = System::Windows::Forms::FormStartPosition::CenterParent;
 			this->Text = L"Изменение пароля";
