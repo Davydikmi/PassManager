@@ -38,6 +38,7 @@ namespace PasswordManager
 		bool NullOrWhiteSpace_validation(String^ input_str)
 		{
 			std::string InputStr = convert.to_string(input_str);
+
 			//суки, почему нету здесь нету такой функции
 		}
 	};
