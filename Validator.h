@@ -17,7 +17,7 @@ namespace PasswordManager
 				bool switcher = false;
 				for (char symbol : alphabet)
 				{
-					if (InputStr[i] == symbol && InputStr[i] != ' ')
+					if (InputStr[i] == symbol)
 					{
 						switcher = true;
 						break;
@@ -37,9 +37,49 @@ namespace PasswordManager
 		}
 		bool NullOrWhiteSpace_validation(String^ input_str)
 		{
-			std::string InputStr = convert.to_string(input_str);
+			std::string str = convert.to_string(input_str);
 
-			//суки, почему нету здесь нету такой функции
+			// Проверка на пустую строку
+			if (str.empty()) return false;
+
+			//Проверка на наличие пробелов в строке
+			for (char symb : str)
+			{
+				if (isspace(symb))
+				{
+					return false;
+				}
+			}
+
+			// Если всё ок, то исход true
+			return true;
+		}
+
+		bool length_validation(String^ input_str)
+		{
+			std::string str = convert.to_string(input_str);
+			if (0 < str.length() && str.length() <= 40)
+			{
+				return true;
+			}
+			else return false;
+		}
+
+		// Проверка на правильность формата читаемых данных из файла
+		bool fileData_validation(String^ input_str)
+		{
+			std::string filepath = convert.to_string(input_str);
+			std::ifstream file(filepath);
+			//доделать
+		}
+
+		// Проверка на успешное чтение/открытие файла
+		bool fileExists_validation(String^ input_str)
+		{
+			std::string filepath = convert.to_string(input_str);
+			std::ifstream file(filepath);
+			if (file.is_open()) return true;
+			else return false;
 		}
 	};
 }
