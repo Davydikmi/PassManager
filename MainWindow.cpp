@@ -4,6 +4,7 @@
 #include <ctime>
 #include <sstream>
 #include <iomanip>
+#include <cstdlib>
 #include <vcclr.h>
 #include <msclr/marshal_cppstd.h>
 #include <msclr\marshal.h>

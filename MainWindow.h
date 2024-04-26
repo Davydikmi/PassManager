@@ -51,8 +51,8 @@ namespace PasswordManager {
 	private: System::Windows::Forms::ColumnHeader^ service;
 	private: System::Windows::Forms::ColumnHeader^ login;
 	private: System::Windows::Forms::ColumnHeader^ password;
-	private: System::Windows::Forms::ColumnHeader^ create_date;
-	private: System::Windows::Forms::ColumnHeader^ change_date;
+
+
 
 
 
@@ -74,12 +74,11 @@ namespace PasswordManager {
 		/// </summary>
 		void InitializeComponent(void)
 		{
+			System::ComponentModel::ComponentResourceManager^ resources = (gcnew System::ComponentModel::ComponentResourceManager(MainWindow::typeid));
 			this->listview = (gcnew System::Windows::Forms::ListView());
 			this->service = (gcnew System::Windows::Forms::ColumnHeader());
 			this->login = (gcnew System::Windows::Forms::ColumnHeader());
 			this->password = (gcnew System::Windows::Forms::ColumnHeader());
-			this->create_date = (gcnew System::Windows::Forms::ColumnHeader());
-			this->change_date = (gcnew System::Windows::Forms::ColumnHeader());
 			this->create_button = (gcnew System::Windows::Forms::Button());
 			this->change_button = (gcnew System::Windows::Forms::Button());
 			this->delete_button = (gcnew System::Windows::Forms::Button());
@@ -88,9 +87,9 @@ namespace PasswordManager {
 			// 
 			// listview
 			// 
-			this->listview->Columns->AddRange(gcnew cli::array< System::Windows::Forms::ColumnHeader^  >(5) {
+			this->listview->Columns->AddRange(gcnew cli::array< System::Windows::Forms::ColumnHeader^  >(3) {
 				this->service, this->login,
-					this->password, this->create_date, this->change_date
+					this->password
 			});
 			this->listview->Font = (gcnew System::Drawing::Font(L"Calibri", 11.25F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(204)));
@@ -98,7 +97,7 @@ namespace PasswordManager {
 			this->listview->Location = System::Drawing::Point(14, 12);
 			this->listview->Margin = System::Windows::Forms::Padding(4, 3, 4, 3);
 			this->listview->Name = L"listview";
-			this->listview->Size = System::Drawing::Size(508, 579);
+			this->listview->Size = System::Drawing::Size(460, 579);
 			this->listview->TabIndex = 0;
 			this->listview->UseCompatibleStateImageBehavior = false;
 			this->listview->View = System::Windows::Forms::View::Details;
@@ -106,34 +105,24 @@ namespace PasswordManager {
 			// service
 			// 
 			this->service->Text = L"Сервис";
-			this->service->Width = 89;
+			this->service->Width = 153;
 			// 
 			// login
 			// 
 			this->login->Text = L"Логин";
-			this->login->Width = 84;
+			this->login->Width = 160;
 			// 
 			// password
 			// 
 			this->password->Text = L"Пароль";
-			this->password->Width = 101;
-			// 
-			// create_date
-			// 
-			this->create_date->Text = L"Дата создания";
-			this->create_date->Width = 110;
-			// 
-			// change_date
-			// 
-			this->change_date->Text = L"Дата изменения";
-			this->change_date->Width = 126;
+			this->password->Width = 218;
 			// 
 			// create_button
 			// 
 			this->create_button->FlatStyle = System::Windows::Forms::FlatStyle::System;
 			this->create_button->Font = (gcnew System::Drawing::Font(L"Calibri Light", 14.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(204)));
-			this->create_button->Location = System::Drawing::Point(544, 12);
+			this->create_button->Location = System::Drawing::Point(495, 12);
 			this->create_button->Margin = System::Windows::Forms::Padding(4, 3, 4, 3);
 			this->create_button->Name = L"create_button";
 			this->create_button->Size = System::Drawing::Size(145, 41);
@@ -147,7 +136,7 @@ namespace PasswordManager {
 			this->change_button->FlatStyle = System::Windows::Forms::FlatStyle::System;
 			this->change_button->Font = (gcnew System::Drawing::Font(L"Calibri Light", 14.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(204)));
-			this->change_button->Location = System::Drawing::Point(544, 69);
+			this->change_button->Location = System::Drawing::Point(495, 69);
 			this->change_button->Margin = System::Windows::Forms::Padding(4, 3, 4, 3);
 			this->change_button->Name = L"change_button";
 			this->change_button->Size = System::Drawing::Size(145, 41);
@@ -161,7 +150,7 @@ namespace PasswordManager {
 			this->delete_button->FlatStyle = System::Windows::Forms::FlatStyle::System;
 			this->delete_button->Font = (gcnew System::Drawing::Font(L"Calibri Light", 14.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(204)));
-			this->delete_button->Location = System::Drawing::Point(544, 127);
+			this->delete_button->Location = System::Drawing::Point(495, 127);
 			this->delete_button->Margin = System::Windows::Forms::Padding(4, 3, 4, 3);
 			this->delete_button->Name = L"delete_button";
 			this->delete_button->Size = System::Drawing::Size(145, 41);
@@ -174,7 +163,7 @@ namespace PasswordManager {
 			this->reset_button->FlatStyle = System::Windows::Forms::FlatStyle::System;
 			this->reset_button->Font = (gcnew System::Drawing::Font(L"Calibri Light", 14.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(204)));
-			this->reset_button->Location = System::Drawing::Point(544, 550);
+			this->reset_button->Location = System::Drawing::Point(495, 550);
 			this->reset_button->Margin = System::Windows::Forms::Padding(4, 3, 4, 3);
 			this->reset_button->Name = L"reset_button";
 			this->reset_button->Size = System::Drawing::Size(145, 41);
@@ -187,7 +176,7 @@ namespace PasswordManager {
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(7, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
-			this->ClientSize = System::Drawing::Size(704, 611);
+			this->ClientSize = System::Drawing::Size(663, 611);
 			this->Controls->Add(this->reset_button);
 			this->Controls->Add(this->delete_button);
 			this->Controls->Add(this->change_button);
@@ -196,6 +185,7 @@ namespace PasswordManager {
 			this->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(204)));
 			this->FormBorderStyle = System::Windows::Forms::FormBorderStyle::FixedSingle;
+			this->Icon = (cli::safe_cast<System::Drawing::Icon^>(resources->GetObject(L"$this.Icon")));
 			this->Margin = System::Windows::Forms::Padding(4, 3, 4, 3);
 			this->MaximizeBox = false;
 			this->Name = L"MainWindow";
@@ -206,6 +196,10 @@ namespace PasswordManager {
 		}
 #pragma endregion
 	
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// - - - - - - - - - - - - - - - - - - Начало пользовательских функций - - - - - - - - - - - - - - - - -
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
 		private: System::Void create_button_Click(System::Object^ sender, System::EventArgs^ e) 
 		{
 			createWindow^ createwin = gcnew createWindow();

@@ -1,7 +1,9 @@
 #pragma once
+#include "CreateStruct.h"
+#include "Converter.h"
+#include "Validator.h"
 
 namespace PasswordManager {
-
 	using namespace System;
 	using namespace System::ComponentModel;
 	using namespace System::Collections;
@@ -50,15 +52,19 @@ namespace PasswordManager {
 	private: System::Windows::Forms::CheckBox^ uppercase_CB;
 	private: System::Windows::Forms::CheckBox^ lowercase_CB;
 	private: System::Windows::Forms::CheckBox^ special_symb_CB;
-	private: System::Windows::Forms::Button^ create_button;
+	private: System::Windows::Forms::Button^ generate_button;
+
 	private: System::Windows::Forms::Label^ label1;
 
 	private: System::Windows::Forms::GroupBox^ groupBox1;
 	private: System::Windows::Forms::Label^ label3;
 
 	private: System::Windows::Forms::Label^ label2;
-	private: System::Windows::Forms::ComboBox^ comboBox1;
+
 	private: System::Windows::Forms::TextBox^ textBox1;
+	private: System::Windows::Forms::TextBox^ passwordLen_TB;
+
+
 
 
 
@@ -75,6 +81,7 @@ namespace PasswordManager {
 		/// </summary>
 		void InitializeComponent(void)
 		{
+			System::ComponentModel::ComponentResourceManager^ resources = (gcnew System::ComponentModel::ComponentResourceManager(createWindow::typeid));
 			this->password_textbox = (gcnew System::Windows::Forms::TextBox());
 			this->login_textbox = (gcnew System::Windows::Forms::TextBox());
 			this->service_textbox = (gcnew System::Windows::Forms::TextBox());
@@ -89,11 +96,11 @@ namespace PasswordManager {
 			this->uppercase_CB = (gcnew System::Windows::Forms::CheckBox());
 			this->lowercase_CB = (gcnew System::Windows::Forms::CheckBox());
 			this->special_symb_CB = (gcnew System::Windows::Forms::CheckBox());
-			this->create_button = (gcnew System::Windows::Forms::Button());
+			this->generate_button = (gcnew System::Windows::Forms::Button());
 			this->label1 = (gcnew System::Windows::Forms::Label());
 			this->groupBox1 = (gcnew System::Windows::Forms::GroupBox());
-			this->comboBox1 = (gcnew System::Windows::Forms::ComboBox());
 			this->label3 = (gcnew System::Windows::Forms::Label());
+			this->passwordLen_TB = (gcnew System::Windows::Forms::TextBox());
 			this->label2 = (gcnew System::Windows::Forms::Label());
 			this->textBox1 = (gcnew System::Windows::Forms::TextBox());
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox1))->BeginInit();
@@ -175,6 +182,7 @@ namespace PasswordManager {
 			// random_RB
 			// 
 			this->random_RB->AutoSize = true;
+			this->random_RB->Checked = true;
 			this->random_RB->Font = (gcnew System::Drawing::Font(L"Calibri", 14.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(204)));
 			this->random_RB->Location = System::Drawing::Point(171, 21);
@@ -194,7 +202,6 @@ namespace PasswordManager {
 			this->by_hand_RB->Name = L"by_hand_RB";
 			this->by_hand_RB->Size = System::Drawing::Size(128, 27);
 			this->by_hand_RB->TabIndex = 15;
-			this->by_hand_RB->TabStop = true;
 			this->by_hand_RB->Text = L"Ручной ввод";
 			this->by_hand_RB->UseVisualStyleBackColor = true;
 			// 
@@ -247,16 +254,17 @@ namespace PasswordManager {
 			this->special_symb_CB->Text = L"Спец. символы";
 			this->special_symb_CB->UseVisualStyleBackColor = true;
 			// 
-			// create_button
+			// generate_button
 			// 
-			this->create_button->Font = (gcnew System::Drawing::Font(L"Calibri", 14.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+			this->generate_button->Font = (gcnew System::Drawing::Font(L"Calibri", 14.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(204)));
-			this->create_button->Location = System::Drawing::Point(16, 337);
-			this->create_button->Name = L"create_button";
-			this->create_button->Size = System::Drawing::Size(99, 35);
-			this->create_button->TabIndex = 21;
-			this->create_button->Text = L"Создать";
-			this->create_button->UseVisualStyleBackColor = true;
+			this->generate_button->Location = System::Drawing::Point(244, 338);
+			this->generate_button->Name = L"generate_button";
+			this->generate_button->Size = System::Drawing::Size(99, 35);
+			this->generate_button->TabIndex = 21;
+			this->generate_button->Text = L"Создать";
+			this->generate_button->UseVisualStyleBackColor = true;
+			this->generate_button->Click += gcnew System::EventHandler(this, &createWindow::generate_button_Click);
 			// 
 			// label1
 			// 
@@ -271,8 +279,8 @@ namespace PasswordManager {
 			// 
 			// groupBox1
 			// 
-			this->groupBox1->Controls->Add(this->comboBox1);
 			this->groupBox1->Controls->Add(this->label3);
+			this->groupBox1->Controls->Add(this->passwordLen_TB);
 			this->groupBox1->Controls->Add(this->label2);
 			this->groupBox1->Controls->Add(this->numbers_CB);
 			this->groupBox1->Controls->Add(this->lowercase_CB);
@@ -287,27 +295,23 @@ namespace PasswordManager {
 			this->groupBox1->TabStop = false;
 			this->groupBox1->Text = L"Настройки генератора:";
 			// 
-			// comboBox1
-			// 
-			this->comboBox1->FormattingEnabled = true;
-			this->comboBox1->Items->AddRange(gcnew cli::array< System::Object^  >(37) {
-				L"4", L"5", L"6", L"7", L"8", L"9", L"10", L"11",
-					L"12", L"13", L"14", L"15", L"16", L"17", L"18", L"19", L"20", L"21", L"22", L"23", L"24", L"25", L"26", L"27", L"28", L"29",
-					L"30", L"31", L"32", L"33", L"34", L"35", L"36", L"37", L"38", L"39", L"40"
-			});
-			this->comboBox1->Location = System::Drawing::Point(126, 84);
-			this->comboBox1->Name = L"comboBox1";
-			this->comboBox1->Size = System::Drawing::Size(61, 29);
-			this->comboBox1->TabIndex = 24;
-			// 
 			// label3
 			// 
 			this->label3->AutoSize = true;
-			this->label3->Location = System::Drawing::Point(189, 88);
+			this->label3->Location = System::Drawing::Point(181, 88);
 			this->label3->Name = L"label3";
 			this->label3->Size = System::Drawing::Size(89, 21);
 			this->label3->TabIndex = 23;
 			this->label3->Text = L"- символов";
+			// 
+			// passwordLen_TB
+			// 
+			this->passwordLen_TB->Font = (gcnew System::Drawing::Font(L"Calibri", 12, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(204)));
+			this->passwordLen_TB->Location = System::Drawing::Point(128, 86);
+			this->passwordLen_TB->Name = L"passwordLen_TB";
+			this->passwordLen_TB->Size = System::Drawing::Size(53, 27);
+			this->passwordLen_TB->TabIndex = 26;
 			// 
 			// label2
 			// 
@@ -337,7 +341,7 @@ namespace PasswordManager {
 			this->Controls->Add(this->textBox1);
 			this->Controls->Add(this->groupBox1);
 			this->Controls->Add(this->label1);
-			this->Controls->Add(this->create_button);
+			this->Controls->Add(this->generate_button);
 			this->Controls->Add(this->pictureBox1);
 			this->Controls->Add(this->by_hand_RB);
 			this->Controls->Add(this->random_RB);
@@ -349,6 +353,7 @@ namespace PasswordManager {
 			this->Controls->Add(this->login_label);
 			this->Controls->Add(this->service_label);
 			this->FormBorderStyle = System::Windows::Forms::FormBorderStyle::FixedSingle;
+			this->Icon = (cli::safe_cast<System::Drawing::Icon^>(resources->GetObject(L"$this.Icon")));
 			this->MaximizeBox = false;
 			this->Name = L"createWindow";
 			this->StartPosition = System::Windows::Forms::FormStartPosition::CenterParent;
@@ -362,7 +367,27 @@ namespace PasswordManager {
 		}
 #pragma endregion
 	
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// - - - - - - - - - - - - - - - - - - Начало пользовательских функций - - - - - - - - - - - - - - - - -
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-
+	private: System::Void generate_button_Click(System::Object^ sender, System::EventArgs^ e)
+	{
+		GeneratePassword GenPass;
+		Converter convert;
+		Validator validation;
+		bool numbers_status = numbers_CB->Checked;
+		bool lowercase_status = lowercase_CB->Checked;
+		bool uppercase_status = uppercase_CB->Checked;
+		bool specialSymb_status = special_symb_CB->Checked;
+		String^ inputPassLen = passwordLen_TB->Text;
+		if (!(validation.isDigit(inputPassLen) && validation.NullOrWhiteSpace(inputPassLen)))
+		{
+			// Здесь код выполняется, если не проходит валидацию
+			MessageBox::Show("Вместо длинны пароля введено неверное значение!", "Ошибка", MessageBoxButtons::OK, MessageBoxIcon::Error);
+			return;
+		}
+		
+	}
 };
 }

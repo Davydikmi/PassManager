@@ -47,6 +47,7 @@ namespace PasswordManager {
 	private: System::Windows::Forms::TextBox^ service_textbox;
 	private: System::Windows::Forms::TextBox^ login_textbox;
 	private: System::Windows::Forms::TextBox^ password_textbox;
+	private: System::Windows::Forms::Label^ label1;
 
 
 
@@ -63,6 +64,7 @@ namespace PasswordManager {
 		/// </summary>
 		void InitializeComponent(void)
 		{
+			System::ComponentModel::ComponentResourceManager^ resources = (gcnew System::ComponentModel::ComponentResourceManager(ChangeWindow::typeid));
 			this->service_label = (gcnew System::Windows::Forms::Label());
 			this->login_label = (gcnew System::Windows::Forms::Label());
 			this->password_label = (gcnew System::Windows::Forms::Label());
@@ -70,6 +72,7 @@ namespace PasswordManager {
 			this->service_textbox = (gcnew System::Windows::Forms::TextBox());
 			this->login_textbox = (gcnew System::Windows::Forms::TextBox());
 			this->password_textbox = (gcnew System::Windows::Forms::TextBox());
+			this->label1 = (gcnew System::Windows::Forms::Label());
 			this->SuspendLayout();
 			// 
 			// service_label
@@ -144,11 +147,23 @@ namespace PasswordManager {
 			this->password_textbox->TabIndex = 6;
 			this->password_textbox->Text = L"\r\n";
 			// 
+			// label1
+			// 
+			this->label1->AutoSize = true;
+			this->label1->Font = (gcnew System::Drawing::Font(L"Calibri", 14.25F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(204)));
+			this->label1->Location = System::Drawing::Point(8, 9);
+			this->label1->Name = L"label1";
+			this->label1->Size = System::Drawing::Size(209, 23);
+			this->label1->TabIndex = 7;
+			this->label1->Text = L"¬ведите новые данные:";
+			// 
 			// ChangeWindow
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->ClientSize = System::Drawing::Size(354, 261);
+			this->Controls->Add(this->label1);
 			this->Controls->Add(this->password_textbox);
 			this->Controls->Add(this->login_textbox);
 			this->Controls->Add(this->service_textbox);
@@ -157,6 +172,7 @@ namespace PasswordManager {
 			this->Controls->Add(this->login_label);
 			this->Controls->Add(this->service_label);
 			this->FormBorderStyle = System::Windows::Forms::FormBorderStyle::FixedSingle;
+			this->Icon = (cli::safe_cast<System::Drawing::Icon^>(resources->GetObject(L"$this.Icon")));
 			this->Name = L"ChangeWindow";
 			this->StartPosition = System::Windows::Forms::FormStartPosition::CenterParent;
 			this->Text = L"»зменение парол€";
