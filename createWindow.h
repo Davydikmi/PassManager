@@ -1,6 +1,5 @@
 #pragma once
 #include "CreateStruct.h"
-#include "Converter.h"
 #include "Validator.h"
 
 namespace PasswordManager {
@@ -374,7 +373,6 @@ namespace PasswordManager {
 	private: System::Void generate_button_Click(System::Object^ sender, System::EventArgs^ e)
 	{
 		GeneratePassword GenPass;
-		Converter convert;
 		Validator validation;
 		bool numbers_status = numbers_CB->Checked;
 		bool lowercase_status = lowercase_CB->Checked;

@@ -9,7 +9,6 @@
 #include <msclr/marshal_cppstd.h>
 #include <msclr\marshal.h>
 #include <msclr\marshal_windows.h>
-#include <nlohmann/json.hpp>
 
 using namespace System;
 using namespace System::ComponentModel;
@@ -17,13 +16,15 @@ using namespace System::Collections;
 using namespace System::Windows::Forms;
 using namespace System::Data;
 using namespace System::Drawing;
+using namespace System::IO;
+
 
 #include "MainWindow.h"
 #include "ChangeWindow.h"
 #include "createWindow.h"
 #include "CreateStruct.h"
-#include "Converter.h"
 #include "Validator.h"
+#include "Converter.h"
 
 [STAThreadAttribute]
 int main(array<String^>^ args)
@@ -33,12 +34,3 @@ int main(array<String^>^ args)
 	PasswordManager::MainWindow window;
 	Application::Run(% window);
 }
-
-/*
-Класс Валидации:
--допустимые символы(вложенный цикл пробегается по всем стингу со всеми значениями,пробел тоже символ)			готово
--нулл ор уайт спэйс																								готово
--длинна пароля(от 4 до 40)																						готово
--проверка входных данных из файла																				в процессе
--проверка на существование файла																				готово
-*/
