@@ -9,8 +9,9 @@ public ref struct Validator
     String^ Alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&?~=*[]{};:<>,.|`";
     String^ filepath = "database.txt";
 
+
     // Ìועמהû
-    bool symbol_validation(String^ str);
+    bool valid_symbols(String^ str);
     bool NullOrWhiteSpace(String^ input_str);
     bool isValidLine(String^ line);
     bool validateFileData();

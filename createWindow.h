@@ -52,15 +52,17 @@ namespace PasswordManager {
 	private: System::Windows::Forms::CheckBox^ lowercase_CB;
 	private: System::Windows::Forms::CheckBox^ special_symb_CB;
 	private: System::Windows::Forms::Button^ generate_button;
+	private: System::Windows::Forms::Label^ your_pass_label;
 
-	private: System::Windows::Forms::Label^ label1;
+
 
 	private: System::Windows::Forms::GroupBox^ groupBox1;
 	private: System::Windows::Forms::Label^ label3;
 
 	private: System::Windows::Forms::Label^ label2;
+	private: System::Windows::Forms::TextBox^ generatedPass_TB;
 
-	private: System::Windows::Forms::TextBox^ textBox1;
+
 	private: System::Windows::Forms::TextBox^ passwordLen_TB;
 
 
@@ -96,12 +98,12 @@ namespace PasswordManager {
 			this->lowercase_CB = (gcnew System::Windows::Forms::CheckBox());
 			this->special_symb_CB = (gcnew System::Windows::Forms::CheckBox());
 			this->generate_button = (gcnew System::Windows::Forms::Button());
-			this->label1 = (gcnew System::Windows::Forms::Label());
+			this->your_pass_label = (gcnew System::Windows::Forms::Label());
 			this->groupBox1 = (gcnew System::Windows::Forms::GroupBox());
 			this->label3 = (gcnew System::Windows::Forms::Label());
 			this->passwordLen_TB = (gcnew System::Windows::Forms::TextBox());
 			this->label2 = (gcnew System::Windows::Forms::Label());
-			this->textBox1 = (gcnew System::Windows::Forms::TextBox());
+			this->generatedPass_TB = (gcnew System::Windows::Forms::TextBox());
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox1))->BeginInit();
 			this->groupBox1->SuspendLayout();
 			this->SuspendLayout();
@@ -115,6 +117,7 @@ namespace PasswordManager {
 			this->password_textbox->Size = System::Drawing::Size(246, 27);
 			this->password_textbox->TabIndex = 13;
 			this->password_textbox->Text = L"\r\n";
+			this->password_textbox->Visible = false;
 			// 
 			// login_textbox
 			// 
@@ -144,6 +147,7 @@ namespace PasswordManager {
 			this->submit_button->TabIndex = 10;
 			this->submit_button->Text = L"Подтвердить";
 			this->submit_button->UseVisualStyleBackColor = true;
+			this->submit_button->Click += gcnew System::EventHandler(this, &createWindow::submit_button_Click);
 			// 
 			// password_label
 			// 
@@ -155,6 +159,7 @@ namespace PasswordManager {
 			this->password_label->Size = System::Drawing::Size(79, 23);
 			this->password_label->TabIndex = 9;
 			this->password_label->Text = L"Пароль: ";
+			this->password_label->Visible = false;
 			// 
 			// login_label
 			// 
@@ -191,6 +196,7 @@ namespace PasswordManager {
 			this->random_RB->TabStop = true;
 			this->random_RB->Text = L"Генерация пароля";
 			this->random_RB->UseVisualStyleBackColor = true;
+			this->random_RB->CheckedChanged += gcnew System::EventHandler(this, &createWindow::random_RB_CheckedChanged);
 			// 
 			// by_hand_RB
 			// 
@@ -203,6 +209,7 @@ namespace PasswordManager {
 			this->by_hand_RB->TabIndex = 15;
 			this->by_hand_RB->Text = L"Ручной ввод";
 			this->by_hand_RB->UseVisualStyleBackColor = true;
+			this->by_hand_RB->CheckedChanged += gcnew System::EventHandler(this, &createWindow::by_hand_RB_CheckedChanged);
 			// 
 			// pictureBox1
 			// 
@@ -265,16 +272,17 @@ namespace PasswordManager {
 			this->generate_button->UseVisualStyleBackColor = true;
 			this->generate_button->Click += gcnew System::EventHandler(this, &createWindow::generate_button_Click);
 			// 
-			// label1
+			// your_pass_label
 			// 
-			this->label1->AutoSize = true;
-			this->label1->Font = (gcnew System::Drawing::Font(L"Calibri Light", 14.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+			this->your_pass_label->AutoSize = true;
+			this->your_pass_label->Font = (gcnew System::Drawing::Font(L"Calibri Light", 14.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(204)));
-			this->label1->Location = System::Drawing::Point(12, 385);
-			this->label1->Name = L"label1";
-			this->label1->Size = System::Drawing::Size(113, 23);
-			this->label1->TabIndex = 22;
-			this->label1->Text = L"Ваш пароль: ";
+			this->your_pass_label->Location = System::Drawing::Point(12, 385);
+			this->your_pass_label->Name = L"your_pass_label";
+			this->your_pass_label->Size = System::Drawing::Size(113, 23);
+			this->your_pass_label->TabIndex = 22;
+			this->your_pass_label->Text = L"Ваш пароль: ";
+			this->your_pass_label->Visible = false;
 			// 
 			// groupBox1
 			// 
@@ -321,25 +329,27 @@ namespace PasswordManager {
 			this->label2->TabIndex = 21;
 			this->label2->Text = L"Длинна пароля: ";
 			// 
-			// textBox1
+			// generatedPass_TB
 			// 
-			this->textBox1->Font = (gcnew System::Drawing::Font(L"Calibri Light", 12, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+			this->generatedPass_TB->Font = (gcnew System::Drawing::Font(L"Calibri Light", 12, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(204)));
-			this->textBox1->Location = System::Drawing::Point(122, 385);
-			this->textBox1->Name = L"textBox1";
-			this->textBox1->ReadOnly = true;
-			this->textBox1->Size = System::Drawing::Size(221, 27);
-			this->textBox1->TabIndex = 25;
-			this->textBox1->Text = L"только для чтения\r\n";
+			this->generatedPass_TB->Location = System::Drawing::Point(122, 385);
+			this->generatedPass_TB->Name = L"generatedPass_TB";
+			this->generatedPass_TB->ReadOnly = true;
+			this->generatedPass_TB->Size = System::Drawing::Size(221, 27);
+			this->generatedPass_TB->TabIndex = 25;
+			this->generatedPass_TB->Text = L"только для чтения\r\n";
+			this->generatedPass_TB->Visible = false;
 			// 
 			// createWindow
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->ClientSize = System::Drawing::Size(354, 571);
-			this->Controls->Add(this->textBox1);
+			this->Controls->Add(this->submit_button);
+			this->Controls->Add(this->generatedPass_TB);
 			this->Controls->Add(this->groupBox1);
-			this->Controls->Add(this->label1);
+			this->Controls->Add(this->your_pass_label);
 			this->Controls->Add(this->generate_button);
 			this->Controls->Add(this->pictureBox1);
 			this->Controls->Add(this->by_hand_RB);
@@ -347,7 +357,6 @@ namespace PasswordManager {
 			this->Controls->Add(this->password_textbox);
 			this->Controls->Add(this->login_textbox);
 			this->Controls->Add(this->service_textbox);
-			this->Controls->Add(this->submit_button);
 			this->Controls->Add(this->password_label);
 			this->Controls->Add(this->login_label);
 			this->Controls->Add(this->service_label);
@@ -370,6 +379,11 @@ namespace PasswordManager {
 // - - - - - - - - - - - - - - - - - - Начало пользовательских функций - - - - - - - - - - - - - - - - -
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+
+	bool mode = true;			// true - режим генерации, false - режим ввода, необходимо для логики
+	bool isGenerated = false;	// Маркер для отображения сген. пароля при первой генерации
+
+	// Генерация пароля
 	private: System::Void generate_button_Click(System::Object^ sender, System::EventArgs^ e)
 	{
 		GeneratePassword GenPass;
@@ -386,6 +400,84 @@ namespace PasswordManager {
 			return;
 		}
 		
+	}
+
+	// Смена режима на Ручной ввод
+	private: System::Void by_hand_RB_CheckedChanged(System::Object^ sender, System::EventArgs^ e)
+	{
+		mode = false;
+		groupBox1->Visible = false;
+		generate_button->Visible = false;
+		your_pass_label->Visible = false;
+		generatedPass_TB->Visible = false;
+		submit_button->Location = System::Drawing::Point(207, 311);
+		this->ClientSize = System::Drawing::Size(354, 370);
+		password_label->Visible = true;
+		password_textbox->Visible = true;
+
+		//Изначальная локация кнопки 207,517 -> 190,10
+	
+	}
+
+	// Смена режима на генерацию
+	private: System::Void random_RB_CheckedChanged(System::Object^ sender, System::EventArgs^ e) 
+	{
+		mode = true;
+		groupBox1->Visible = true;
+		generate_button->Visible = true;
+		submit_button->Location = System::Drawing::Point(207, 517);
+		this->ClientSize = System::Drawing::Size(354, 571);
+		password_label->Visible = false;
+		password_textbox->Visible = false;
+		if(isGenerated)
+		{
+			your_pass_label->Visible = false;
+			generatedPass_TB->Visible = false;
+		}
+	}
+
+	// Кнопка ввода пароля
+	private: System::Void submit_button_Click(System::Object^ sender, System::EventArgs^ e)	
+	{
+		Validator validator;
+		GeneratePassword generatePass;
+
+		String^ service = service_textbox->Text;
+		String^ login = login_textbox->Text;
+		String^ generatedPass = generatedPass_TB->Text;
+		String^ password = password_textbox->Text;
+		String^ passLen = passwordLen_TB->Text;
+
+		if (!mode)
+		{
+			// Режим Ручного ввода
+			if (!(validator.valid_symbols(service) && validator.NullOrWhiteSpace(service)))
+			{
+				MessageBox::Show("В поле «Сервис» введено неверное значение!", "Ошибка", MessageBoxButtons::OK, MessageBoxIcon::Error);
+				return;
+			}
+			else if (!(validator.valid_symbols(login) && validator.NullOrWhiteSpace(login)))
+			{
+				MessageBox::Show("В поле «Логин» введено неверное значение!", "Ошибка", MessageBoxButtons::OK, MessageBoxIcon::Error);
+				return;
+			}
+			//что такое с паролем
+			else if (!(validator.valid_symbols(password) && validator.NullOrWhiteSpace(password)))
+			{
+				MessageBox::Show("В поле «Пароль» введено неверное значение!", "Ошибка", MessageBoxButtons::OK, MessageBoxIcon::Error);
+				return;
+			}
+			else
+			{
+				MessageBox::Show("Всё гуд");
+			}
+
+		}
+		else 
+		{
+			// Режим генерации
+		}
+		this->Close();
 	}
 };
 }

@@ -4,7 +4,7 @@ using namespace System;
 using namespace System::IO;
 
 // Реализация метода проверки символов
-bool Validator::symbol_validation(String^ str)
+bool Validator::valid_symbols(String^ str)
 {
     // Цикл по каждому символу в строке
     for (int i = 0; i < str->Length; i++)
