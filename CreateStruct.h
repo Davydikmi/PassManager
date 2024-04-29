@@ -21,5 +21,6 @@ namespace PasswordManager
         // Ìועמהû
         void WriteToFile();
         void random_generating(bool Digits, bool Uppercase, bool Lowercase, bool Special_symb, int length);
+        void ClearFile();
     };
 }

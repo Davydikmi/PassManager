@@ -219,23 +219,39 @@ namespace PasswordManager {
 		// Очистка DB
 		private: System::Void reset_button_Click(System::Object^ sender, System::EventArgs^ e) 
 		{
+			CreatePassword createpass;
 			System::Windows::Forms::DialogResult result = MessageBox::Show("Вы уверены, что хотите очистить базу данных?", "Подтверждение", MessageBoxButtons::YesNo, MessageBoxIcon::Question);
 			if (result == System::Windows::Forms::DialogResult::Yes)
 			{
-				std::ofstream file("database.txt");
-				file.clear();
-				file.close();
+				createpass.ClearFile();
 				listview->Items->Clear();
 				// MessageBox::Show("База данных успешно очищена!", "Информация", MessageBoxButtons::OK, MessageBoxIcon::Asterisk);
 			}
 		}
 
 	// Функции обновления таблицы с данными
-	private: System::Void MainWindow_Activated(System::Object^ sender, System::EventArgs^ e)
+	void update_window()
 	{
-		listview->Items->Clear();
-		StreamReader^ reader = gcnew StreamReader("database.txt");
+		CreatePassword createpass;
+		Validator validator;
 
+		listview->Items->Clear();
+		if (!validator.FileExists())
+		{
+			MessageBox::Show("Файл с данными не обнаружен!", "Ошибка", MessageBoxButtons::OK, MessageBoxIcon::Error);
+			this->Close();
+		}
+
+		StreamReader^ reader = gcnew StreamReader("database.txt");
+		if (!validator.validateFileData())
+		{
+			System::Windows::Forms::DialogResult result = MessageBox::Show("Файл с данными повреждён. Хотите ли вы очистить его?", "Ошибка", MessageBoxButtons::YesNo, MessageBoxIcon::Error);
+			if (result == System::Windows::Forms::DialogResult::Yes)
+			{
+				createpass.ClearFile();
+				listview->Items->Clear();
+			}
+		}
 		while (!reader->EndOfStream)
 		{
 			String^ line = reader->ReadLine();
@@ -245,25 +261,15 @@ namespace PasswordManager {
 			item->SubItems->Add(parts[2]);
 			listview->Items->Add(item);
 		}
-
 		reader->Close();
+	}
+	private: System::Void MainWindow_Activated(System::Object^ sender, System::EventArgs^ e)
+	{
+		//update_window();
 	}
 	private: System::Void MainWindow_Load(System::Object^ sender, System::EventArgs^ e) 
 	{
-		listview->Items->Clear();
-		StreamReader^ reader = gcnew StreamReader("database.txt");
-
-		while (!reader->EndOfStream) 
-		{
-			String^ line = reader->ReadLine();
-			array<String^>^ parts = line->Split(' ');
-			ListViewItem^ item = gcnew ListViewItem(parts[0]);
-			item->SubItems->Add(parts[1]);
-			item->SubItems->Add(parts[2]);
-			listview->Items->Add(item);
-		}
-
-		reader->Close();
+		update_window();
 	}
 };
 }

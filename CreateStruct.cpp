@@ -62,4 +62,17 @@ void CreatePassword::random_generating(bool Digits, bool Uppercase, bool Lowerca
     }
 }
 
+void CreatePassword::ClearFile()
+{
+    //FileStream^ fileStream = gcnew FileStream(filepath, FileMode::Create);
+    //fileStream->Close();
+    StreamWriter^ writer = gcnew StreamWriter(filepath, false);
+
+    // Пишем пустую строку в файл, чтобы очистить его
+    writer->Write(String::Empty);
+
+    // Закрываем StreamWriter
+    writer->Close();
+}
+
 
