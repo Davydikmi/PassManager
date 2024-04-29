@@ -200,20 +200,32 @@ namespace PasswordManager {
 // - - - - - - - - - - - - - - - - - - Начало пользовательских функций - - - - - - - - - - - - - - - - -
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+		//Открытие диалогового окна с созданием пароля
 		private: System::Void create_button_Click(System::Object^ sender, System::EventArgs^ e) 
 		{
 			createWindow^ createwin = gcnew createWindow();
 			createwin->ShowDialog();
 		}
+
+		// Открытие диалогового окна с изменением
 		private: System::Void change_button_Click(System::Object^ sender, System::EventArgs^ e) 
 		{
 			ChangeWindow^ changewin = gcnew ChangeWindow();
 			changewin->ShowDialog();
 		}
+
+		// Очистка DB
 		private: System::Void reset_button_Click(System::Object^ sender, System::EventArgs^ e) 
 		{
-			System::Windows::Forms::DialogResult result = MessageBox::Show("Вы уверены, что хотите очистить базу данных?", "Подтверждение", MessageBoxButtons::YesNo, MessageBoxIcon::Asterisk);
-			if (result == System::Windows::Forms::DialogResult::Yes) listview->Items->Clear();
+			System::Windows::Forms::DialogResult result = MessageBox::Show("Вы уверены, что хотите очистить базу данных?", "Подтверждение", MessageBoxButtons::YesNo, MessageBoxIcon::Question);
+			if (result == System::Windows::Forms::DialogResult::Yes)
+			{
+				std::ofstream file("database.txt");
+				file.clear();
+				file.close();
+				listview->Items->Clear();
+				MessageBox::Show("База данных успешно очищена!", "Информация", MessageBoxButtons::OK, MessageBoxIcon::Asterisk);
+			}
 		}
 };
 }
