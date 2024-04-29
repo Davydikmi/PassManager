@@ -4,12 +4,11 @@ using namespace System;
 using namespace System::IO;
 using namespace System::Collections;
 
-// ќбъ€вление пространства имен и структуры GeneratePassword
+// ќбъ€вление пространства имен и структуры CreatePassword
 namespace PasswordManager
 {
-    public ref struct GeneratePassword
+    public ref struct CreatePassword
     {
-        // ѕол€
         String^ digits = "0123456789";
         String^ uppercase_letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
         String^ lowercase_letters = "abcdefghijklmnopqrstuvwxyz";
@@ -20,7 +19,7 @@ namespace PasswordManager
         String^ filepath = "database.txt";
 
         // ћетоды
-        void WriteToFile(String^& inp_service, String^& inp_login, String^& inp_password);
+        void WriteToFile();
         void random_generating(bool Digits, bool Uppercase, bool Lowercase, bool Special_symb, int length);
     };
 }

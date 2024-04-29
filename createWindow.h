@@ -1,6 +1,9 @@
 #pragma once
+#include <fstream>
+
 #include "CreateStruct.h"
 #include "Validator.h"
+
 
 namespace PasswordManager {
 	using namespace System;
@@ -386,8 +389,8 @@ namespace PasswordManager {
 	// Генерация пароля
 	private: System::Void generate_button_Click(System::Object^ sender, System::EventArgs^ e)
 	{
-		GeneratePassword GenPass;
-		Validator validation;
+		CreatePassword createpass;
+		Validator validator;
 		bool numbers_status = numbers_CB->Checked;
 		bool lowercase_status = lowercase_CB->Checked;
 		bool uppercase_status = uppercase_CB->Checked;
@@ -400,7 +403,7 @@ namespace PasswordManager {
 			return;
 		}
 
-		else if (!(validation.isDigit(PassLen) && validation.NullOrWhiteSpace(PassLen)))
+		else if (!(validator.isDigit(PassLen) && validator.NullOrWhiteSpace(PassLen)))
 		{
 			// Здесь код выполняется, если не проходит валидацию
 			MessageBox::Show("Вместо длинны пароля введено неверное значение!", "Ошибка", MessageBoxButtons::OK, MessageBoxIcon::Error);
@@ -411,8 +414,8 @@ namespace PasswordManager {
 			isGenerated = true;
 			your_pass_label->Visible = true;
 			generatedPass_TB->Visible = true;
-			GenPass.random_generating(numbers_status, uppercase_status, lowercase_status, specialSymb_status, Int32::Parse(PassLen));
-			generatedPass_TB->Text = GenPass.password;
+			createpass.random_generating(numbers_status, uppercase_status, lowercase_status, specialSymb_status, Int32::Parse(PassLen));
+			generatedPass_TB->Text = createpass.password;
 		}
 		
 	}
@@ -455,29 +458,27 @@ namespace PasswordManager {
 	private: System::Void submit_button_Click(System::Object^ sender, System::EventArgs^ e)	
 	{
 		Validator validator;
-		GeneratePassword generatePass;
+		CreatePassword createpass;
 
-		String^ service = service_textbox->Text;
-		String^ login = login_textbox->Text;
-		String^ generatedPass = generatedPass_TB->Text;
-		String^ password = password_textbox->Text;
-		String^ passLen = passwordLen_TB->Text;
+		createpass.Service = service_textbox->Text;
+		createpass.login = login_textbox->Text;
 
 		if (!mode)
 		{
 			// Режим Ручного ввода
-			if (!(validator.valid_symbols(service) && validator.NullOrWhiteSpace(service)))
+			createpass.password = password_textbox->Text;
+			if (!(validator.valid_symbols(createpass.Service) && validator.NullOrWhiteSpace(createpass.Service)))
 			{
 				MessageBox::Show("В поле «Сервис» введено неверное значение!", "Ошибка", MessageBoxButtons::OK, MessageBoxIcon::Error);
 				return;
 			}
-			else if (!(validator.valid_symbols(login) && validator.NullOrWhiteSpace(login)))
+			else if (!(validator.valid_symbols(createpass.login) && validator.NullOrWhiteSpace(createpass.login)))
 			{
 				MessageBox::Show("В поле «Логин» введено неверное значение!", "Ошибка", MessageBoxButtons::OK, MessageBoxIcon::Error);
 				return;
 			}
 			//что такое с паролем
-			else if (!(validator.valid_symbols(password) && validator.NullOrWhiteSpace(password)))
+			else if (!(validator.valid_symbols(createpass.password) && validator.NullOrWhiteSpace(createpass.password)))
 			{
 				MessageBox::Show("В поле «Пароль» введено неверное значение!", "Ошибка", MessageBoxButtons::OK, MessageBoxIcon::Error);
 				return;
@@ -491,6 +492,45 @@ namespace PasswordManager {
 		else 
 		{
 			// Режим генерации
+			createpass.password = generatedPass_TB->Text;
+
+			if (!(validator.valid_symbols(createpass.Service) && validator.NullOrWhiteSpace(createpass.Service)))
+			{
+				MessageBox::Show("В поле «Сервис» введено неверное значение!", "Ошибка", MessageBoxButtons::OK, MessageBoxIcon::Error);
+				return;
+			}
+			else if (!(validator.valid_symbols(createpass.login) && validator.NullOrWhiteSpace(createpass.login)))
+			{
+				MessageBox::Show("В поле «Логин» введено неверное значение!", "Ошибка", MessageBoxButtons::OK, MessageBoxIcon::Error);
+				return;
+			}
+			else if (!isGenerated)
+			{
+				MessageBox::Show("Пароль не сгенерирован!", "Ошибка", MessageBoxButtons::OK, MessageBoxIcon::Error);
+				return;
+			}
+			else
+			{
+				if (!validator.validateFileData())
+				{
+					System::Windows::Forms::DialogResult result = MessageBox::Show("Файл записи поврежден!\n\tХотите ли вы очистить базу данных для корректной работы программы?", "Ошибка", MessageBoxButtons::YesNo, MessageBoxIcon::Question);
+					if (result == System::Windows::Forms::DialogResult::Yes) 
+					{
+					std::ofstream file("database.txt");
+					file.clear();
+					file.close();
+					MessageBox::Show("База данных успешно очищена!", "Информация", MessageBoxButtons::OK, MessageBoxIcon::Asterisk);
+					return;
+					}
+				}
+				else
+				{
+					createpass.WriteToFile();
+					MessageBox::Show("Данные успешно записаны в файл!", "Сообщение", MessageBoxButtons::OK, MessageBoxIcon::Asterisk);
+				}
+			}
+
+
 		}
 		this->Close();
 	}

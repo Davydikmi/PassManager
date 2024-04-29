@@ -6,14 +6,10 @@ using namespace System::Collections;
 using namespace PasswordManager;
 
 // Реализация метода WriteToFile
-void GeneratePassword::WriteToFile(String^& inp_service, String^& inp_login, String^& inp_password)
+void CreatePassword::WriteToFile()
 {
     // Открываем файл для записи (добавление к концу файла)
     StreamWriter^ writer = gcnew StreamWriter(filepath, true);
-
-    Service = inp_service;
-    login = inp_login;
-    password = inp_password;
 
     String^ line = Service + " " + login + " " + password;
     writer->WriteLine(line);
@@ -22,7 +18,7 @@ void GeneratePassword::WriteToFile(String^& inp_service, String^& inp_login, Str
 }
 
 // Реализация метода Input_Random
-void GeneratePassword::random_generating(bool Digits, bool Uppercase, bool Lowercase, bool Special_symb, int length)
+void CreatePassword::random_generating(bool Digits, bool Uppercase, bool Lowercase, bool Special_symb, int length)
 {
     Random^ rand = gcnew Random();
 
