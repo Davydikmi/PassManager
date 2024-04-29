@@ -21,6 +21,6 @@ namespace PasswordManager
 
         // Ìועמהû
         void WriteToFile(String^& inp_service, String^& inp_login, String^& inp_password);
-        void Input_Random(bool Digits, bool Uppercase, bool Lowercase, bool Special_symb, int length);
+        void random_generating(bool Digits, bool Uppercase, bool Lowercase, bool Special_symb, int length);
     };
 }

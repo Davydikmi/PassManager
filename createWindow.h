@@ -392,12 +392,27 @@ namespace PasswordManager {
 		bool lowercase_status = lowercase_CB->Checked;
 		bool uppercase_status = uppercase_CB->Checked;
 		bool specialSymb_status = special_symb_CB->Checked;
-		String^ inputPassLen = passwordLen_TB->Text;
-		if (!(validation.isDigit(inputPassLen) && validation.NullOrWhiteSpace(inputPassLen)))
+		String^ PassLen = passwordLen_TB->Text;
+		if (!(numbers_status || lowercase_status || uppercase_status || specialSymb_status))
+		{
+			// Здесь код выполняется, если не проходит валидацию
+			MessageBox::Show("В настройках генератора должен быть активен хотя бы один флаг!", "Ошибка", MessageBoxButtons::OK, MessageBoxIcon::Error);
+			return;
+		}
+
+		else if (!(validation.isDigit(PassLen) && validation.NullOrWhiteSpace(PassLen)))
 		{
 			// Здесь код выполняется, если не проходит валидацию
 			MessageBox::Show("Вместо длинны пароля введено неверное значение!", "Ошибка", MessageBoxButtons::OK, MessageBoxIcon::Error);
 			return;
+		}
+		else
+		{
+			isGenerated = true;
+			your_pass_label->Visible = true;
+			generatedPass_TB->Visible = true;
+			GenPass.random_generating(numbers_status, uppercase_status, lowercase_status, specialSymb_status, Int32::Parse(PassLen));
+			generatedPass_TB->Text = GenPass.password;
 		}
 		
 	}

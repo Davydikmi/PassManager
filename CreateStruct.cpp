@@ -22,7 +22,7 @@ void GeneratePassword::WriteToFile(String^& inp_service, String^& inp_login, Str
 }
 
 // Реализация метода Input_Random
-void GeneratePassword::Input_Random(bool Digits, bool Uppercase, bool Lowercase, bool Special_symb, int length)
+void GeneratePassword::random_generating(bool Digits, bool Uppercase, bool Lowercase, bool Special_symb, int length)
 {
     Random^ rand = gcnew Random();
 
