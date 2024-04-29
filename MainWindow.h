@@ -191,6 +191,8 @@ namespace PasswordManager {
 			this->Name = L"MainWindow";
 			this->StartPosition = System::Windows::Forms::FormStartPosition::CenterScreen;
 			this->Text = L"Менеджер паролей";
+			this->Activated += gcnew System::EventHandler(this, &MainWindow::MainWindow_Activated);
+			this->Load += gcnew System::EventHandler(this, &MainWindow::MainWindow_Load);
 			this->ResumeLayout(false);
 
 		}
@@ -224,8 +226,44 @@ namespace PasswordManager {
 				file.clear();
 				file.close();
 				listview->Items->Clear();
-				MessageBox::Show("База данных успешно очищена!", "Информация", MessageBoxButtons::OK, MessageBoxIcon::Asterisk);
+				// MessageBox::Show("База данных успешно очищена!", "Информация", MessageBoxButtons::OK, MessageBoxIcon::Asterisk);
 			}
 		}
+
+	// Функции обновления таблицы с данными
+	private: System::Void MainWindow_Activated(System::Object^ sender, System::EventArgs^ e)
+	{
+		listview->Items->Clear();
+		StreamReader^ reader = gcnew StreamReader("database.txt");
+
+		while (!reader->EndOfStream)
+		{
+			String^ line = reader->ReadLine();
+			array<String^>^ parts = line->Split(' ');
+			ListViewItem^ item = gcnew ListViewItem(parts[0]);
+			item->SubItems->Add(parts[1]);
+			item->SubItems->Add(parts[2]);
+			listview->Items->Add(item);
+		}
+
+		reader->Close();
+	}
+	private: System::Void MainWindow_Load(System::Object^ sender, System::EventArgs^ e) 
+	{
+		listview->Items->Clear();
+		StreamReader^ reader = gcnew StreamReader("database.txt");
+
+		while (!reader->EndOfStream) 
+		{
+			String^ line = reader->ReadLine();
+			array<String^>^ parts = line->Split(' ');
+			ListViewItem^ item = gcnew ListViewItem(parts[0]);
+			item->SubItems->Add(parts[1]);
+			item->SubItems->Add(parts[2]);
+			listview->Items->Add(item);
+		}
+
+		reader->Close();
+	}
 };
 }
