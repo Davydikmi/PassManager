@@ -42,26 +42,53 @@ bool Validator::isValidLine(String^ line)
 // Реализация метода проверки валидности данных файла
 bool Validator::validateFileData()
 {
-    // Открываем файл для чтения
     StreamReader^ reader = gcnew StreamReader(filepath);
-
-    // Проверка валидности всех строк
-    bool allLinesValid = true;
 
     while (!reader->EndOfStream)
     {
         String^ line = reader->ReadLine();
+        array<String^>^ words = line->Split(' ');
 
-        if (!isValidLine(line))
+        if (!(words->Length == 3))
         {
-            // Если строка не валидна, выводим сообщение и отмечаем это
-            Console::WriteLine("Invalid line: " + line);
-            allLinesValid = false;
+            return false;
+        }
+        for (int i = 0; i < 3; i++)
+        {
+            if (!valid_symbols(words[i]))
+            {
+                reader->Close();
+                return false;
+            }
         }
     }
     reader->Close();
+    return true;
+}
 
-    return allLinesValid;
+// Проверка на повтор строк(сервис должен быть разный)
+bool Validator::doubleServiceValid(String^ service)
+{
+    StreamReader^ reader = gcnew StreamReader(filepath);
+    while (!reader->EndOfStream)
+    {
+        String^ line = reader->ReadLine();
+        array<String^>^ words = line->Split(' ');
+        if (words[0] == service)
+        {
+            reader->Close();
+            return false;
+        }
+
+    }
+    reader->Close();
+    return true;
+}
+
+// Проверка на существование файла
+bool Validator::FileExists()
+{
+    return File::Exists(filepath);
 }
 
 // Реализация метода проверки на число
@@ -74,3 +101,6 @@ bool Validator::isDigit(String^ input_str)
     }
     return false;
 }
+
+
+

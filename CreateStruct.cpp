@@ -1,3 +1,5 @@
+#include <fstream>
+
 #include "CreateStruct.h"
 
 using namespace System;
@@ -59,3 +61,5 @@ void CreatePassword::random_generating(bool Digits, bool Uppercase, bool Lowerca
         password += new_symb;
     }
 }
+
+

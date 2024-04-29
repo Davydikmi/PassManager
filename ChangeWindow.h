@@ -80,10 +80,9 @@ namespace PasswordManager {
 			this->service_label->AutoSize = true;
 			this->service_label->Font = (gcnew System::Drawing::Font(L"Calibri Light", 14.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(204)));
-			this->service_label->Location = System::Drawing::Point(11, 65);
-			this->service_label->Margin = System::Windows::Forms::Padding(4, 0, 4, 0);
+			this->service_label->Location = System::Drawing::Point(8, 53);
 			this->service_label->Name = L"service_label";
-			this->service_label->Size = System::Drawing::Size(95, 29);
+			this->service_label->Size = System::Drawing::Size(75, 23);
 			this->service_label->TabIndex = 0;
 			this->service_label->Text = L"Сервис: ";
 			// 
@@ -92,10 +91,9 @@ namespace PasswordManager {
 			this->login_label->AutoSize = true;
 			this->login_label->Font = (gcnew System::Drawing::Font(L"Calibri Light", 14.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(204)));
-			this->login_label->Location = System::Drawing::Point(11, 114);
-			this->login_label->Margin = System::Windows::Forms::Padding(4, 0, 4, 0);
+			this->login_label->Location = System::Drawing::Point(8, 93);
 			this->login_label->Name = L"login_label";
-			this->login_label->Size = System::Drawing::Size(85, 29);
+			this->login_label->Size = System::Drawing::Size(66, 23);
 			this->login_label->TabIndex = 1;
 			this->login_label->Text = L"Логин: ";
 			// 
@@ -104,10 +102,9 @@ namespace PasswordManager {
 			this->password_label->AutoSize = true;
 			this->password_label->Font = (gcnew System::Drawing::Font(L"Calibri Light", 14.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(204)));
-			this->password_label->Location = System::Drawing::Point(11, 164);
-			this->password_label->Margin = System::Windows::Forms::Padding(4, 0, 4, 0);
+			this->password_label->Location = System::Drawing::Point(8, 133);
 			this->password_label->Name = L"password_label";
-			this->password_label->Size = System::Drawing::Size(97, 29);
+			this->password_label->Size = System::Drawing::Size(79, 23);
 			this->password_label->TabIndex = 2;
 			this->password_label->Text = L"Пароль: ";
 			// 
@@ -115,10 +112,9 @@ namespace PasswordManager {
 			// 
 			this->submit_button->Font = (gcnew System::Drawing::Font(L"Calibri", 14.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(204)));
-			this->submit_button->Location = System::Drawing::Point(271, 255);
-			this->submit_button->Margin = System::Windows::Forms::Padding(4, 4, 4, 4);
+			this->submit_button->Location = System::Drawing::Point(203, 207);
 			this->submit_button->Name = L"submit_button";
-			this->submit_button->Size = System::Drawing::Size(181, 52);
+			this->submit_button->Size = System::Drawing::Size(136, 42);
 			this->submit_button->TabIndex = 3;
 			this->submit_button->Text = L"Подтвердить";
 			this->submit_button->UseVisualStyleBackColor = true;
@@ -127,30 +123,27 @@ namespace PasswordManager {
 			// 
 			this->service_textbox->Font = (gcnew System::Drawing::Font(L"Calibri Light", 12, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(204)));
-			this->service_textbox->Location = System::Drawing::Point(124, 60);
-			this->service_textbox->Margin = System::Windows::Forms::Padding(4, 4, 4, 4);
+			this->service_textbox->Location = System::Drawing::Point(93, 49);
 			this->service_textbox->Name = L"service_textbox";
-			this->service_textbox->Size = System::Drawing::Size(327, 32);
+			this->service_textbox->Size = System::Drawing::Size(246, 27);
 			this->service_textbox->TabIndex = 4;
 			// 
 			// login_textbox
 			// 
 			this->login_textbox->Font = (gcnew System::Drawing::Font(L"Calibri Light", 12, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(204)));
-			this->login_textbox->Location = System::Drawing::Point(124, 110);
-			this->login_textbox->Margin = System::Windows::Forms::Padding(4, 4, 4, 4);
+			this->login_textbox->Location = System::Drawing::Point(93, 89);
 			this->login_textbox->Name = L"login_textbox";
-			this->login_textbox->Size = System::Drawing::Size(327, 32);
+			this->login_textbox->Size = System::Drawing::Size(246, 27);
 			this->login_textbox->TabIndex = 5;
 			// 
 			// password_textbox
 			// 
 			this->password_textbox->Font = (gcnew System::Drawing::Font(L"Calibri Light", 12, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(204)));
-			this->password_textbox->Location = System::Drawing::Point(124, 159);
-			this->password_textbox->Margin = System::Windows::Forms::Padding(4, 4, 4, 4);
+			this->password_textbox->Location = System::Drawing::Point(93, 129);
 			this->password_textbox->Name = L"password_textbox";
-			this->password_textbox->Size = System::Drawing::Size(327, 32);
+			this->password_textbox->Size = System::Drawing::Size(246, 27);
 			this->password_textbox->TabIndex = 6;
 			this->password_textbox->Text = L"\r\n";
 			// 
@@ -159,18 +152,17 @@ namespace PasswordManager {
 			this->label1->AutoSize = true;
 			this->label1->Font = (gcnew System::Drawing::Font(L"Calibri", 14.25F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(204)));
-			this->label1->Location = System::Drawing::Point(11, 11);
-			this->label1->Margin = System::Windows::Forms::Padding(4, 0, 4, 0);
+			this->label1->Location = System::Drawing::Point(8, 9);
 			this->label1->Name = L"label1";
-			this->label1->Size = System::Drawing::Size(256, 29);
+			this->label1->Size = System::Drawing::Size(204, 23);
 			this->label1->TabIndex = 7;
 			this->label1->Text = L"Введите новые данные";
 			// 
 			// ChangeWindow
 			// 
-			this->AutoScaleDimensions = System::Drawing::SizeF(8, 16);
+			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
-			this->ClientSize = System::Drawing::Size(472, 321);
+			this->ClientSize = System::Drawing::Size(354, 261);
 			this->Controls->Add(this->label1);
 			this->Controls->Add(this->password_textbox);
 			this->Controls->Add(this->login_textbox);
@@ -181,8 +173,9 @@ namespace PasswordManager {
 			this->Controls->Add(this->service_label);
 			this->FormBorderStyle = System::Windows::Forms::FormBorderStyle::FixedSingle;
 			this->Icon = (cli::safe_cast<System::Drawing::Icon^>(resources->GetObject(L"$this.Icon")));
-			this->Margin = System::Windows::Forms::Padding(4, 4, 4, 4);
+			this->MaximizeBox = false;
 			this->Name = L"ChangeWindow";
+			this->ShowInTaskbar = false;
 			this->StartPosition = System::Windows::Forms::FormStartPosition::CenterParent;
 			this->Text = L"Изменение пароля";
 			this->Load += gcnew System::EventHandler(this, &ChangeWindow::ChangeWindow_Load);

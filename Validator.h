@@ -15,5 +15,8 @@ public ref struct Validator
     bool NullOrWhiteSpace(String^ input_str);
     bool isValidLine(String^ line);
     bool validateFileData();
+    bool FileExists();
     bool isDigit(String^ input_str);
+    bool doubleServiceValid(String^ service);
+
 };

@@ -367,6 +367,7 @@ namespace PasswordManager {
 			this->Icon = (cli::safe_cast<System::Drawing::Icon^>(resources->GetObject(L"$this.Icon")));
 			this->MaximizeBox = false;
 			this->Name = L"createWindow";
+			this->ShowInTaskbar = false;
 			this->StartPosition = System::Windows::Forms::FormStartPosition::CenterParent;
 			this->Text = L"Создание пароля";
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox1))->EndInit();
@@ -449,8 +450,8 @@ namespace PasswordManager {
 		password_textbox->Visible = false;
 		if(isGenerated)
 		{
-			your_pass_label->Visible = false;
-			generatedPass_TB->Visible = false;
+			your_pass_label->Visible = true;
+			generatedPass_TB->Visible = true;
 		}
 	}
 
@@ -485,7 +486,22 @@ namespace PasswordManager {
 			}
 			else
 			{
-				MessageBox::Show("Всё гуд");
+				if (!validator.FileExists())
+					{
+					MessageBox::Show("Файл базы данных не обнаружен!", "Ошибка", MessageBoxButtons::OK, MessageBoxIcon::Error);
+					return;
+					}
+				else if (!validator.validateFileData())
+				{
+					MessageBox::Show("Файл записи поврежден! Очистите базу данных для корректной работы програмы.", "Ошибка", MessageBoxButtons::OK, MessageBoxIcon::Error);
+					return;
+				}
+
+				else
+				{
+					createpass.WriteToFile();
+					MessageBox::Show("Данные успешно записаны в файл!", "Сообщение", MessageBoxButtons::OK, MessageBoxIcon::Asterisk);
+				}
 			}
 
 		}
@@ -513,15 +529,13 @@ namespace PasswordManager {
 			{
 				if (!validator.validateFileData())
 				{
-					System::Windows::Forms::DialogResult result = MessageBox::Show("Файл записи поврежден!\n\tХотите ли вы очистить базу данных для корректной работы программы?", "Ошибка", MessageBoxButtons::YesNo, MessageBoxIcon::Question);
-					if (result == System::Windows::Forms::DialogResult::Yes) 
-					{
-					std::ofstream file("database.txt");
-					file.clear();
-					file.close();
-					MessageBox::Show("База данных успешно очищена!", "Информация", MessageBoxButtons::OK, MessageBoxIcon::Asterisk);
+					MessageBox::Show("Файл записи поврежден! Очистите базу данных для корректной работы програмы.", "Ошибка", MessageBoxButtons::OK, MessageBoxIcon::Error);
 					return;
-					}
+				}
+				else if (!validator.FileExists())
+				{
+					MessageBox::Show("Файл базы данных не обнаружен!", "Ошибка", MessageBoxButtons::OK, MessageBoxIcon::Error);
+					return;
 				}
 				else
 				{
@@ -536,5 +550,3 @@ namespace PasswordManager {
 	}
 };
 }
-
-ывывв
