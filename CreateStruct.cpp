@@ -15,7 +15,6 @@ void CreatePassword::WriteToFile()
 
     String^ line = Service + " " + login + " " + password;
     writer->WriteLine(line);
-
     writer->Close();
 }
 

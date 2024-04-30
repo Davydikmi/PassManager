@@ -225,7 +225,7 @@ namespace PasswordManager {
 			{
 				createpass.ClearFile();
 				listview->Items->Clear();
-				// MessageBox::Show("База данных успешно очищена!", "Информация", MessageBoxButtons::OK, MessageBoxIcon::Asterisk);
+				MessageBox::Show("База данных успешно очищена!", "Информация", MessageBoxButtons::OK, MessageBoxIcon::Asterisk);
 			}
 		}
 
@@ -265,7 +265,7 @@ namespace PasswordManager {
 	}
 	private: System::Void MainWindow_Activated(System::Object^ sender, System::EventArgs^ e)
 	{
-		//update_window();
+		update_window();
 	}
 	private: System::Void MainWindow_Load(System::Object^ sender, System::EventArgs^ e) 
 	{
