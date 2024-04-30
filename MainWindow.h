@@ -241,9 +241,7 @@ namespace PasswordManager {
 			MessageBox::Show("Файл с данными не обнаружен!", "Ошибка", MessageBoxButtons::OK, MessageBoxIcon::Error);
 			this->Close();
 		}
-
-		StreamReader^ reader = gcnew StreamReader("database.txt");
-		if (!validator.validateFileData())
+		else if (!validator.validateFileData())
 		{
 			System::Windows::Forms::DialogResult result = MessageBox::Show("Файл с данными повреждён. Хотите ли вы очистить его?", "Ошибка", MessageBoxButtons::YesNo, MessageBoxIcon::Error);
 			if (result == System::Windows::Forms::DialogResult::Yes)
@@ -251,7 +249,9 @@ namespace PasswordManager {
 				createpass.ClearFile();
 				listview->Items->Clear();
 			}
+			this->Close();
 		}
+		StreamReader^ reader = gcnew StreamReader("database.txt");
 		while (!reader->EndOfStream)
 		{
 			String^ line = reader->ReadLine();

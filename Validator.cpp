@@ -1,3 +1,5 @@
+#include <fstream>
+
 #include "Validator.h"
 
 using namespace System;
@@ -51,6 +53,7 @@ bool Validator::validateFileData()
 
         if (!(words->Length == 3))
         {
+            reader->Close();
             return false;
         }
         for (int i = 0; i < 3; i++)
