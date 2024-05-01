@@ -214,7 +214,21 @@ namespace PasswordManager {
 		// Открытие диалогового окна с изменением
 		private: System::Void change_button_Click(System::Object^ sender, System::EventArgs^ e) 
 		{
-			ChangeWindow^ changewin = gcnew ChangeWindow();
+			Validator validator;
+			CreatePassword createpass;
+
+			// Проверка на выделенный элемент
+			if (listview->SelectedItems->Count != 1)
+			{
+				MessageBox::Show("   Ошибка! Выделите сервис в таблице, данные которого вы хотите изменить!", "Ошибка", MessageBoxButtons::OK, MessageBoxIcon::Error);
+				return;
+			}
+			ListViewItem^ selectedItem = listview->SelectedItems[0];
+			createpass.Service = selectedItem->SubItems[0]->Text;
+			createpass.login = selectedItem->SubItems[1]->Text;
+			createpass.password = selectedItem->SubItems[2]->Text;
+
+			ChangeWindow^ changewin = gcnew ChangeWindow(createpass.Service, createpass.login, createpass.password);
 			changewin->ShowDialog();
 		}
 
@@ -227,7 +241,7 @@ namespace PasswordManager {
 			// Проверка на выделенный элемент
 			if (listview->SelectedItems->Count != 1)
 			{
-				MessageBox::Show("   Ошибка! Выделите сервис в таблице, данные которого выхотите удалить!", "Ошибка", MessageBoxButtons::OK, MessageBoxIcon::Error);
+				MessageBox::Show("   Ошибка! Выделите сервис в таблице, данные которого вы хотите удалить!", "Ошибка", MessageBoxButtons::OK, MessageBoxIcon::Error);
 				return;
 			}
 
@@ -242,7 +256,7 @@ namespace PasswordManager {
 			if (result == System::Windows::Forms::DialogResult::No)	return;
 
 
-			if (!validator.FindDelData(createpass.Service,createpass.login,createpass.password))
+			if (!validator.FindData(createpass.Service,createpass.login,createpass.password))
 			{
 				MessageBox::Show("Ошибка! Не удалось совершить удаление, так как невозможно найти данные в файле!", "Ошибка", MessageBoxButtons::OK, MessageBoxIcon::Error);
 				return;

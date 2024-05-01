@@ -429,7 +429,7 @@ namespace PasswordManager {
 			return;
 		}
 
-		else if (!(validator.isDigit(PassLen) && validator.NullOrWhiteSpace(PassLen)))
+		else if (!(validator.isDigit(PassLen) && validator.NullOrWhiteSpace(PassLen) && PassLen != "0"))
 		{
 			// Здесь код выполняется, если не проходит валидацию
 			MessageBox::Show("Вместо длинны пароля введено неверное значение!", "Ошибка", MessageBoxButtons::OK, MessageBoxIcon::Error);

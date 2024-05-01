@@ -72,7 +72,6 @@ void CreatePassword::ClearFile()
 
 void CreatePassword::DeleteData()
 {
-
     List<String^>^ lines = gcnew List<String^>();
     StreamReader^ reader = gcnew StreamReader(filepath);
 
@@ -99,7 +98,31 @@ void CreatePassword::DeleteData()
     writer->Close();
 }
 
-void CreatePassword::ChangeData()
+void CreatePassword::ChangeData(String^ changedService, String^ changedLogin, String^ changedPassword)
 {
+    List<String^>^ lines = gcnew List<String^>();
+    StreamReader^ reader = gcnew StreamReader(filepath);
 
+    while (!reader->EndOfStream)
+    {
+        String^ line = reader->ReadLine();
+        array<String^>^ words = line->Split(' ');
+
+        // Замена данных в массиве
+        if (words[0] == Service && words[1] == login && words[2] == password)
+        {
+            Service = changedService;
+            login = changedLogin;
+            password = changedPassword;
+            line = Service + " " + login + " " + password;
+        }
+        lines->Add(line);
+    }
+    reader->Close();
+
+    // Перезапись измененных данных
+    StreamWriter^ writer = gcnew StreamWriter(filepath, false);
+    for each (String ^ line in lines) writer->WriteLine(line);
+
+    writer->Close();
 }

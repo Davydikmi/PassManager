@@ -23,6 +23,6 @@ namespace PasswordManager
         void random_generating(bool Digits, bool Uppercase, bool Lowercase, bool Special_symb, int length);
         void ClearFile();     
         void DeleteData();
-        void ChangeData();
+        void ChangeData(String^ changedService, String^ changedLogin, String^ changedPassword);
     };
 }

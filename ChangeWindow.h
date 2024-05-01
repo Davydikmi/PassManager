@@ -1,4 +1,6 @@
 #pragma once
+#include "CreateStruct.h"
+#include "Validator.h"
 
 namespace PasswordManager {
 
@@ -15,12 +17,12 @@ namespace PasswordManager {
 	public ref class ChangeWindow : public System::Windows::Forms::Form
 	{
 	public:
-		ChangeWindow(void)
+		ChangeWindow(String^ service, String^ login, String^ password)
 		{
 			InitializeComponent();
-			//
-			//TODO: добавьте код конструктора
-			//
+			this->service = service;
+			this->login = login;
+			this->password = password;
 		}
 
 	protected:
@@ -38,6 +40,12 @@ namespace PasswordManager {
 	private: System::Windows::Forms::Label^ login_label;
 	private: System::Windows::Forms::Label^ password_label;
 	private: System::Windows::Forms::Button^ submit_button;
+
+	// Переменные для автоматического заполнения текстбоксов
+	private: String^ service;
+	private: String^ login;
+	private: String^ password;
+
 	protected:
 
 	protected:
@@ -118,6 +126,7 @@ namespace PasswordManager {
 			this->submit_button->TabIndex = 3;
 			this->submit_button->Text = L"Подтвердить";
 			this->submit_button->UseVisualStyleBackColor = true;
+			this->submit_button->Click += gcnew System::EventHandler(this, &ChangeWindow::submit_button_Click);
 			// 
 			// service_textbox
 			// 
@@ -145,7 +154,6 @@ namespace PasswordManager {
 			this->password_textbox->Name = L"password_textbox";
 			this->password_textbox->Size = System::Drawing::Size(246, 27);
 			this->password_textbox->TabIndex = 6;
-			this->password_textbox->Text = L"\r\n";
 			// 
 			// label1
 			// 
@@ -183,9 +191,64 @@ namespace PasswordManager {
 			this->PerformLayout();
 
 		}
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// - - - - - - - - - - - - - - - - - - Начало пользовательских функций - - - - - - - - - - - - - - - - -
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 #pragma endregion
-	private: System::Void ChangeWindow_Load(System::Object^ sender, System::EventArgs^ e) {
-		//добавить 
+
+	private: System::Void ChangeWindow_Load(System::Object^ sender, System::EventArgs^ e)
+	{
+		// Заполнение полей ввода старыми данными
+		service_textbox->Text = service;
+		login_textbox->Text = login;
+		password_textbox->Text = password;
+	}
+	private: System::Void submit_button_Click(System::Object^ sender, System::EventArgs^ e)
+	{
+		CreatePassword createpass;
+		Validator validator;
+
+		//Старые данные
+		createpass.Service = service;
+		createpass.login = login;
+		createpass.password = password;
+
+		// Новые данные
+		String^ changedService = service_textbox->Text;
+		String^ changedLogin = login_textbox->Text;
+		String^ changedPassword = password_textbox->Text;
+
+		// Валидация
+		if (!(validator.valid_symbols(createpass.Service) && validator.NullOrWhiteSpace(createpass.Service)))
+		{
+			MessageBox::Show("В поле «Сервис» введено неверное значение!", "Ошибка", MessageBoxButtons::OK, MessageBoxIcon::Error);
+			return;
+		}
+		else if (!(validator.valid_symbols(createpass.login) && validator.NullOrWhiteSpace(createpass.login)))
+		{
+			MessageBox::Show("В поле «Логин» введено неверное значение!", "Ошибка", MessageBoxButtons::OK, MessageBoxIcon::Error);
+			return;
+		}
+		else if (!(validator.valid_symbols(createpass.password) && validator.NullOrWhiteSpace(createpass.password)))
+		{
+			MessageBox::Show("В поле «Пароль» введено неверное значение!", "Ошибка", MessageBoxButtons::OK, MessageBoxIcon::Error);
+			return;
+		}
+		else if (!validator.FileExists())
+		{
+			MessageBox::Show("Файл базы данных не обнаружен!", "Ошибка", MessageBoxButtons::OK, MessageBoxIcon::Error);
+			return;
+		}
+		else if (!validator.validateFileData())
+		{
+			System::Windows::Forms::DialogResult result = MessageBox::Show("Файл с данными повреждён. Хотите ли вы очистить его?", "Ошибка", MessageBoxButtons::YesNo, MessageBoxIcon::Error);
+			if (result == System::Windows::Forms::DialogResult::Yes) createpass.ClearFile();
+			return;
+		}
+
+		createpass.ChangeData(changedService,changedLogin,changedPassword);
+		MessageBox::Show("Данные успешно изменены!", "Сообщение", MessageBoxButtons::OK, MessageBoxIcon::Asterisk);
+		this->Close();
 	}
 };
 }
