@@ -18,5 +18,6 @@ public ref struct Validator
     bool FileExists();
     bool isDigit(String^ input_str);
     bool doubleServiceValid(String^ service);
+    bool FindDelData(String^ Service,String^ login, String^ password);
 
 };

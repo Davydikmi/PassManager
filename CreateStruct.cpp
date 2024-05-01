@@ -6,6 +6,7 @@ using namespace System;
 using namespace System::IO;
 using namespace System::Collections;
 using namespace PasswordManager;
+using namespace System::Collections::Generic;
 
 // Реализация метода WriteToFile
 void CreatePassword::WriteToFile()
@@ -69,4 +70,36 @@ void CreatePassword::ClearFile()
     writer->Close();
 }
 
+void CreatePassword::DeleteData()
+{
 
+    List<String^>^ lines = gcnew List<String^>();
+    StreamReader^ reader = gcnew StreamReader(filepath);
+
+    // Чтение из файла в массив
+    while (!reader->EndOfStream)
+    {
+        String^ line = reader->ReadLine();
+        String^ record = Service + " " + login + " " + password;
+
+        if (line != record)
+        {
+            // Если строка не соответствует удаляемой записи, то она сохраняется в список
+            lines->Add(line);
+        }
+    }
+    reader->Close();
+
+
+    // Запись в файл 
+    StreamWriter^ writer = gcnew StreamWriter(filepath, false);
+
+    for each (String^ line in lines) writer->WriteLine(line);
+
+    writer->Close();
+}
+
+void CreatePassword::ChangeData()
+{
+
+}

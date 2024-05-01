@@ -105,5 +105,23 @@ bool Validator::isDigit(String^ input_str)
     return false;
 }
 
+bool Validator::FindDelData(String^ Service, String^ login, String^ password)
+{
+    StreamReader^ reader = gcnew StreamReader(filepath);
+    while (!reader->EndOfStream)
+    {
+        String^ line = reader->ReadLine();
+        array<String^>^ words = line->Split(' ');
+
+        if (words[0] == Service && words[1] == login && words[2] == password)
+        {
+            reader->Close();
+            return true;
+        }
+    }
+
+    reader->Close();
+    return false;
+}
 
 

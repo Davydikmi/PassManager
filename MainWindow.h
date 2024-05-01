@@ -96,6 +96,7 @@ namespace PasswordManager {
 			this->listview->HideSelection = false;
 			this->listview->Location = System::Drawing::Point(14, 12);
 			this->listview->Margin = System::Windows::Forms::Padding(4, 3, 4, 3);
+			this->listview->MultiSelect = false;
 			this->listview->Name = L"listview";
 			this->listview->Size = System::Drawing::Size(460, 579);
 			this->listview->TabIndex = 0;
@@ -157,6 +158,7 @@ namespace PasswordManager {
 			this->delete_button->TabIndex = 3;
 			this->delete_button->Text = L"Удалить";
 			this->delete_button->UseVisualStyleBackColor = true;
+			this->delete_button->Click += gcnew System::EventHandler(this, &MainWindow::delete_button_Click);
 			// 
 			// reset_button
 			// 
@@ -216,6 +218,41 @@ namespace PasswordManager {
 			changewin->ShowDialog();
 		}
 
+		// Кнопка удаления элемента
+		private: System::Void delete_button_Click(System::Object^ sender, System::EventArgs^ e)
+		{
+			Validator validator;
+			CreatePassword createpass;
+
+			// Проверка на выделенный элемент
+			if (listview->SelectedItems->Count != 1)
+			{
+				MessageBox::Show("   Ошибка! Выделите сервис в таблице, данные которого выхотите удалить!", "Ошибка", MessageBoxButtons::OK, MessageBoxIcon::Error);
+				return;
+			}
+
+			// Получение данных из выбранного элемента
+			ListViewItem^ selectedItem = listview->SelectedItems[0];
+			createpass.Service = selectedItem->SubItems[0]->Text;
+			createpass.login = selectedItem->SubItems[1]->Text;
+			createpass.password = selectedItem->SubItems[2]->Text;
+
+			// Потдверждение
+			System::Windows::Forms::DialogResult result = MessageBox::Show("Вы уверены, что хотите удалить данные от сервиса "+createpass.Service+" ?", "Подтверждение", MessageBoxButtons::YesNo, MessageBoxIcon::Question);
+			if (result == System::Windows::Forms::DialogResult::No)	return;
+
+
+			if (!validator.FindDelData(createpass.Service,createpass.login,createpass.password))
+			{
+				MessageBox::Show("Ошибка! Не удалось совершить удаление, так как невозможно найти данные в файле!", "Ошибка", MessageBoxButtons::OK, MessageBoxIcon::Error);
+				return;
+			}
+
+			createpass.DeleteData();
+			MessageBox::Show("Данные от сервиса " + createpass.Service + " успеншно удалены!", "Информация", MessageBoxButtons::OK, MessageBoxIcon::Asterisk);
+		}
+
+
 		// Очистка DB
 		private: System::Void reset_button_Click(System::Object^ sender, System::EventArgs^ e) 
 		{
@@ -263,6 +300,7 @@ namespace PasswordManager {
 		}
 		reader->Close();
 	}
+
 	private: System::Void MainWindow_Activated(System::Object^ sender, System::EventArgs^ e)
 	{
 		update_window();
@@ -271,5 +309,7 @@ namespace PasswordManager {
 	{
 		update_window();
 	}
+
+
 };
 }
