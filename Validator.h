@@ -20,5 +20,7 @@ public ref struct Validator
     bool doubleServiceValid(String^ service);
     bool ChangeServiceValid(String^ service);
     bool FindData(String^ Service,String^ login, String^ password);
+    bool MaxLen(String^ input_str);
+    bool MaxLenGenerated(String^ input_str);
 
 };

@@ -150,4 +150,27 @@ bool Validator::ChangeServiceValid(String^ service)
     return true;
 }
 
+bool Validator::MaxLen(String^ input_str)
+{
+    if (input_str->Length <= 40)
+    {
+        return true;
+    }
+    return false;
+}
+
+bool Validator::MaxLenGenerated(String^ input_str)
+{
+    int length;
+    if (Int32::TryParse(input_str, length))
+    {
+        if (0 < length && length <= 40)
+        {
+            return true;
+        }
+    }
+    return false;
+    
+}
+
 

@@ -429,10 +429,15 @@ namespace PasswordManager {
 			return;
 		}
 
-		else if (!(validator.isDigit(PassLen) && validator.NullOrWhiteSpace(PassLen) && PassLen != "0"))
+		else if (!(validator.isDigit(PassLen) && validator.NullOrWhiteSpace(PassLen)))
 		{
 			// Здесь код выполняется, если не проходит валидацию
 			MessageBox::Show("Вместо длинны пароля введено неверное значение!", "Ошибка", MessageBoxButtons::OK, MessageBoxIcon::Error);
+			return;
+		}
+		else if (!(validator.MaxLenGenerated(PassLen)))
+		{
+			MessageBox::Show("Длинна пароля должна быть не больше 40 символов!", "Ошибка", MessageBoxButtons::OK, MessageBoxIcon::Error);
 			return;
 		}
 		else
@@ -497,16 +502,31 @@ namespace PasswordManager {
 			// Валидация
 			if (!(validator.valid_symbols(createpass.Service) && validator.NullOrWhiteSpace(createpass.Service)&&validator.doubleServiceValid(createpass.Service)))
 			{
+				if (!validator.MaxLen(createpass.Service))
+				{
+					MessageBox::Show("Максимальная длинна сервиса должна быть не более 40 символов!", "Ошибка", MessageBoxButtons::OK, MessageBoxIcon::Error);
+					return;
+				}
 				MessageBox::Show("В поле «Сервис» введено неверное значение!", "Ошибка", MessageBoxButtons::OK, MessageBoxIcon::Error);
 				return;
 			}
 			else if (!(validator.valid_symbols(createpass.login) && validator.NullOrWhiteSpace(createpass.login)))
 			{
+				if (!validator.MaxLen(createpass.login))
+				{
+					MessageBox::Show("Максимальная длинна логина должна быть не более 40 символов!", "Ошибка", MessageBoxButtons::OK, MessageBoxIcon::Error);
+					return;
+				}
 				MessageBox::Show("В поле «Логин» введено неверное значение!", "Ошибка", MessageBoxButtons::OK, MessageBoxIcon::Error);
 				return;
 			}
 			else if (!(validator.valid_symbols(createpass.password) && validator.NullOrWhiteSpace(createpass.password)))
 			{
+				if (!validator.MaxLen(createpass.password))
+				{
+					MessageBox::Show("Максимальная длинна пароля должна быть не более 40 символов!", "Ошибка", MessageBoxButtons::OK, MessageBoxIcon::Error);
+					return;
+				}
 				MessageBox::Show("В поле «Пароль» введено неверное значение!", "Ошибка", MessageBoxButtons::OK, MessageBoxIcon::Error);
 				return;
 			}
@@ -535,11 +555,21 @@ namespace PasswordManager {
 			// Валидация
 			if (!(validator.valid_symbols(createpass.Service) && validator.NullOrWhiteSpace(createpass.Service) && validator.doubleServiceValid(createpass.Service)))
 			{
+				if (!validator.MaxLen(createpass.Service))
+				{
+					MessageBox::Show("Максимальная длинна сервиса должна быть не более 40 символов!", "Ошибка", MessageBoxButtons::OK, MessageBoxIcon::Error);
+					return;
+				}
 				MessageBox::Show("В поле «Сервис» введено неверное значение!", "Ошибка", MessageBoxButtons::OK, MessageBoxIcon::Error);
 				return;
 			}
 			else if (!(validator.valid_symbols(createpass.login) && validator.NullOrWhiteSpace(createpass.login)))
 			{
+				if (!validator.MaxLen(createpass.login))
+				{
+					MessageBox::Show("Максимальная длинна логина должна быть не более 40 символов!", "Ошибка", MessageBoxButtons::OK, MessageBoxIcon::Error);
+					return;
+				}
 				MessageBox::Show("В поле «Логин» введено неверное значение!", "Ошибка", MessageBoxButtons::OK, MessageBoxIcon::Error);
 				return;
 			}
