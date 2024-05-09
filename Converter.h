@@ -1,11 +1,5 @@
 #pragma once
 
-#include <string>
-#include <msclr/marshal.h>
-#include <msclr/marshal_cppstd.h>
-
-using namespace System;
-
 // ќбъ€вление структуры Converter
 public ref struct ConverterStruct
 {

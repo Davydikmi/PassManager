@@ -224,14 +224,29 @@ namespace PasswordManager {
 			MessageBox::Show("В поле «Сервис» введено неверное значение!", "Ошибка", MessageBoxButtons::OK, MessageBoxIcon::Error);
 			return;
 		}
+		else if (!validator.MaxLen(createpass.Service))
+		{
+			MessageBox::Show("Максимальная длинна сервиса должна быть не более 40 символов!", "Ошибка", MessageBoxButtons::OK, MessageBoxIcon::Error);
+			return;
+		}
 		else if (!(validator.valid_symbols(createpass.login) && validator.NullOrWhiteSpace(createpass.login)))
 		{
 			MessageBox::Show("В поле «Логин» введено неверное значение!", "Ошибка", MessageBoxButtons::OK, MessageBoxIcon::Error);
 			return;
 		}
+		else if (!validator.MaxLen(createpass.login))
+		{
+			MessageBox::Show("Максимальная длинна логина должна быть не более 40 символов!", "Ошибка", MessageBoxButtons::OK, MessageBoxIcon::Error);
+			return;
+		}
 		else if (!(validator.valid_symbols(createpass.password) && validator.NullOrWhiteSpace(createpass.password)))
 		{
 			MessageBox::Show("В поле «Пароль» введено неверное значение!", "Ошибка", MessageBoxButtons::OK, MessageBoxIcon::Error);
+			return;
+		}
+		else if (!validator.MaxLen(createpass.password))
+		{
+			MessageBox::Show("Максимальная длинна пароля должна быть не более 40 символов!", "Ошибка", MessageBoxButtons::OK, MessageBoxIcon::Error);
 			return;
 		}
 		else if (!validator.FileExists())

@@ -1,7 +1,10 @@
-#include "Converter.h"
+#include <string>
+#include <msclr/marshal.h>
+#include <msclr/marshal_cppstd.h>
 
 using namespace System;
 
+#include "Converter.h"
 
 // Реализация метода to_string
 std::string ConverterStruct::to_string(String^ input_string)

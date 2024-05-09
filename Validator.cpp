@@ -69,25 +69,6 @@ bool Validator::validateFileData()
     return true;
 }
 
-// Проверка на повтор строк(сервис должен быть разный)
-bool Validator::doubleServiceValid(String^ service)
-{
-    StreamReader^ reader = gcnew StreamReader(filepath);
-    while (!reader->EndOfStream)
-    {
-        String^ line = reader->ReadLine();
-        array<String^>^ words = line->Split(' ');
-        if (words[0] == service)
-        {
-            reader->Close();
-            return false;
-        }
-
-    }
-    reader->Close();
-    return true;
-}
-
 // Проверка на существование файла
 bool Validator::FileExists()
 {
@@ -105,6 +86,7 @@ bool Validator::isDigit(String^ input_str)
     return false;
 }
 
+// Проверка на существование выделенных данных в файле
 bool Validator::FindData(String^ Service, String^ login, String^ password)
 {
     StreamReader^ reader = gcnew StreamReader(filepath);
@@ -124,32 +106,7 @@ bool Validator::FindData(String^ Service, String^ login, String^ password)
     return false;
 }
 
-bool Validator::ChangeServiceValid(String^ service)
-{
-    //StreamReader^ reader = gcnew StreamReader(filepath);
-    //int counter = 0;
-
-    //while (!reader->EndOfStream)
-    //{
-    //    String^ line = reader->ReadLine();
-    //    array<String^>^ words = line->Split(' ');
-
-    //    if (words[0] == service)
-    //    {
-    //        counter++; 
-
-    //        if (counter >= 2)
-    //        {
-    //            reader->Close();
-    //            return false;
-    //        }
-    //    }
-    //}
-
-    //reader->Close();
-    return true;
-}
-
+// Проверка введенного значения на макс. длинну
 bool Validator::MaxLen(String^ input_str)
 {
     if (input_str->Length <= 40)
@@ -159,6 +116,7 @@ bool Validator::MaxLen(String^ input_str)
     return false;
 }
 
+// Проверка на макс. длинну генерируемого пароля
 bool Validator::MaxLenGenerated(String^ input_str)
 {
     int length;
