@@ -51,6 +51,8 @@ namespace PasswordManager {
 	private: System::Windows::Forms::ColumnHeader^ service;
 	private: System::Windows::Forms::ColumnHeader^ login;
 	private: System::Windows::Forms::ColumnHeader^ password;
+	private: System::Windows::Forms::Button^ button1;
+
 
 
 
@@ -83,6 +85,7 @@ namespace PasswordManager {
 			this->change_button = (gcnew System::Windows::Forms::Button());
 			this->delete_button = (gcnew System::Windows::Forms::Button());
 			this->reset_button = (gcnew System::Windows::Forms::Button());
+			this->button1 = (gcnew System::Windows::Forms::Button());
 			this->SuspendLayout();
 			// 
 			// listview
@@ -93,6 +96,7 @@ namespace PasswordManager {
 			});
 			this->listview->Font = (gcnew System::Drawing::Font(L"Calibri", 11.25F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(204)));
+			this->listview->FullRowSelect = true;
 			this->listview->HideSelection = false;
 			this->listview->Location = System::Drawing::Point(14, 12);
 			this->listview->Margin = System::Windows::Forms::Padding(4, 3, 4, 3);
@@ -102,6 +106,7 @@ namespace PasswordManager {
 			this->listview->TabIndex = 0;
 			this->listview->UseCompatibleStateImageBehavior = false;
 			this->listview->View = System::Windows::Forms::View::Details;
+			this->listview->DoubleClick += gcnew System::EventHandler(this, &MainWindow::listview_DoubleClick);
 			// 
 			// service
 			// 
@@ -116,7 +121,7 @@ namespace PasswordManager {
 			// password
 			// 
 			this->password->Text = L"Пароль";
-			this->password->Width = 218;
+			this->password->Width = 300;
 			// 
 			// create_button
 			// 
@@ -174,11 +179,23 @@ namespace PasswordManager {
 			this->reset_button->UseVisualStyleBackColor = true;
 			this->reset_button->Click += gcnew System::EventHandler(this, &MainWindow::reset_button_Click);
 			// 
+			// button1
+			// 
+			this->button1->Font = (gcnew System::Drawing::Font(L"Calibri Light", 14.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(204)));
+			this->button1->Location = System::Drawing::Point(495, 183);
+			this->button1->Name = L"button1";
+			this->button1->Size = System::Drawing::Size(145, 54);
+			this->button1->TabIndex = 5;
+			this->button1->Text = L"Сортировать по алфавиту";
+			this->button1->UseVisualStyleBackColor = true;
+			// 
 			// MainWindow
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(7, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->ClientSize = System::Drawing::Size(663, 611);
+			this->Controls->Add(this->button1);
 			this->Controls->Add(this->reset_button);
 			this->Controls->Add(this->delete_button);
 			this->Controls->Add(this->change_button);
@@ -204,11 +221,27 @@ namespace PasswordManager {
 // - - - - - - - - - - - - - - - - - - Начало пользовательских функций - - - - - - - - - - - - - - - - -
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+
 		//Открытие диалогового окна с созданием пароля
 		private: System::Void create_button_Click(System::Object^ sender, System::EventArgs^ e) 
 		{
 			createWindow^ createwin = gcnew createWindow();
 			createwin->ShowDialog();
+		}
+
+		// Копирование в данных в буфер обмена при двойном клике
+		private: System::Void listview_DoubleClick(System::Object^ sender, System::EventArgs^ e) 
+		{
+			ListViewItem^ selectedItem = listview->SelectedItems[0];
+
+			String^ subitem1 = selectedItem->SubItems[1]->Text;
+			String^ subitem2 = selectedItem->SubItems[2]->Text;
+
+			String^ formattedText = subitem1 + ":" + subitem2;
+
+			// Копирование строку в буфер обмена
+			Clipboard::SetText(formattedText);
+			MessageBox::Show("Данные успешно скопированы в буфер обмена!", "Сообщение", MessageBoxButtons::OK, MessageBoxIcon::Asterisk);
 		}
 
 		// Открытие диалогового окна с изменением
@@ -323,6 +356,7 @@ namespace PasswordManager {
 	{
 		update_window();
 	}
+
 
 
 };
