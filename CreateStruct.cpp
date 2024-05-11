@@ -7,6 +7,7 @@ using namespace System::IO;
 using namespace System::Collections;
 using namespace PasswordManager;
 using namespace System::Collections::Generic;
+using namespace System::Windows::Forms;
 
 // Реализация метода WriteToFile
 void CreatePassword::WriteToFile()
@@ -121,6 +122,46 @@ void CreatePassword::ChangeData(String^ changedService, String^ changedLogin, St
     reader->Close();
 
     // Перезапись измененных данных
+    StreamWriter^ writer = gcnew StreamWriter(filepath, false);
+    for each (String ^ line in lines) writer->WriteLine(line);
+
+    writer->Close();
+}
+
+// Сортировка данных по алфавиту
+void CreatePassword::AlphabetSort()
+{
+    String^ Alphabet = "AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz_0123456789!@#$%^&?~=*[]{};:<>,.|`-";
+    int size = 0;
+    List<String^>^ temp_lines = gcnew List<String^>();
+    List<String^>^ lines = gcnew List<String^>();
+    StreamReader^ reader = gcnew StreamReader(filepath);
+
+    while (!reader->EndOfStream)
+    {
+        String^ line = reader->ReadLine();
+        array<String^>^ words = line->Split(' ');
+        temp_lines->Add(line);
+        size++;
+    }
+    reader->Close();
+
+    // Сортировка данных по алфавиту
+    for each (Char symb in Alphabet)
+    {
+        for each (String ^ line in temp_lines)
+        {
+            if (line[0] == symb)
+            {
+                lines->Add(line);
+            }
+        }
+    }
+
+
+
+
+    // Перезапись отсортированных данных
     StreamWriter^ writer = gcnew StreamWriter(filepath, false);
     for each (String ^ line in lines) writer->WriteLine(line);
 
