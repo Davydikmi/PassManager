@@ -219,32 +219,32 @@ namespace PasswordManager {
 		String^ changedPassword = password_textbox->Text;
 
 		// Валидация
-		if (!(validator.valid_symbols(createpass.Service) && validator.NullOrWhiteSpace(createpass.Service)))
+		if (!(validator.valid_symbols(changedService) && validator.NullOrWhiteSpace(changedService)))
 		{
 			MessageBox::Show("В поле «Сервис» введено неверное значение!", "Ошибка", MessageBoxButtons::OK, MessageBoxIcon::Error);
 			return;
 		}
-		else if (!validator.MaxLen(createpass.Service))
+		else if (!validator.MaxLen(changedService))
 		{
 			MessageBox::Show("Максимальная длинна сервиса должна быть не более 40 символов!", "Ошибка", MessageBoxButtons::OK, MessageBoxIcon::Error);
 			return;
 		}
-		else if (!(validator.valid_symbols(createpass.login) && validator.NullOrWhiteSpace(createpass.login)))
+		else if (!(validator.valid_symbols(changedLogin) && validator.NullOrWhiteSpace(changedLogin)))
 		{
 			MessageBox::Show("В поле «Логин» введено неверное значение!", "Ошибка", MessageBoxButtons::OK, MessageBoxIcon::Error);
 			return;
 		}
-		else if (!validator.MaxLen(createpass.login))
+		else if (!validator.MaxLen(changedLogin))
 		{
 			MessageBox::Show("Максимальная длинна логина должна быть не более 40 символов!", "Ошибка", MessageBoxButtons::OK, MessageBoxIcon::Error);
 			return;
 		}
-		else if (!(validator.valid_symbols(createpass.password) && validator.NullOrWhiteSpace(createpass.password)))
+		else if (!(validator.valid_symbols(changedPassword) && validator.NullOrWhiteSpace(changedPassword)))
 		{
 			MessageBox::Show("В поле «Пароль» введено неверное значение!", "Ошибка", MessageBoxButtons::OK, MessageBoxIcon::Error);
 			return;
 		}
-		else if (!validator.MaxLen(createpass.password))
+		else if (!validator.MaxLen(changedPassword))
 		{
 			MessageBox::Show("Максимальная длинна пароля должна быть не более 40 символов!", "Ошибка", MessageBoxButtons::OK, MessageBoxIcon::Error);
 			return;

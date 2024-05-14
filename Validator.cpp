@@ -4,6 +4,7 @@
 
 using namespace System;
 using namespace System::IO;
+using namespace System::Windows::Forms;
 
 // Реализация метода проверки символов
 bool Validator::valid_symbols(String^ str)
