@@ -16,7 +16,9 @@ namespace PasswordManager
         String^ Service;
         String^ login;
         String^ password;
+        String^ date;
         String^ filepath = "database.txt";
+        String^ Alphabet = "AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz_0123456789!@#$%^&?~=*[]{};:<>,.|`-";
 
         // Функции
         void WriteToFile();
@@ -25,5 +27,10 @@ namespace PasswordManager
         void DeleteData();
         void ChangeData(String^ changedService, String^ changedLogin, String^ changedPassword);
         void AlphabetSort();
+        void ReversedAlphabetSort();
+        void DateSort();
+        int CompareDates(String^ line, int day, int month, int year);
+        void ReversedDateSort();
+        int CompareReversedDates(String^ line, int day, int month, int year);
     };
 }

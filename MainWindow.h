@@ -51,7 +51,15 @@ namespace PasswordManager {
 	private: System::Windows::Forms::ColumnHeader^ service;
 	private: System::Windows::Forms::ColumnHeader^ login;
 	private: System::Windows::Forms::ColumnHeader^ password;
-	private: System::Windows::Forms::Button^ sortButton;
+
+	private: System::Windows::Forms::ColumnHeader^ created_changed_date;
+	private: System::Windows::Forms::Label^ SortLabel;
+	private: System::Windows::Forms::ComboBox^ chooseSort_CB;
+
+
+
+
+
 
 
 
@@ -82,18 +90,20 @@ namespace PasswordManager {
 			this->service = (gcnew System::Windows::Forms::ColumnHeader());
 			this->login = (gcnew System::Windows::Forms::ColumnHeader());
 			this->password = (gcnew System::Windows::Forms::ColumnHeader());
+			this->created_changed_date = (gcnew System::Windows::Forms::ColumnHeader());
 			this->create_button = (gcnew System::Windows::Forms::Button());
 			this->change_button = (gcnew System::Windows::Forms::Button());
 			this->delete_button = (gcnew System::Windows::Forms::Button());
 			this->reset_button = (gcnew System::Windows::Forms::Button());
-			this->sortButton = (gcnew System::Windows::Forms::Button());
+			this->SortLabel = (gcnew System::Windows::Forms::Label());
+			this->chooseSort_CB = (gcnew System::Windows::Forms::ComboBox());
 			this->SuspendLayout();
 			// 
 			// listview
 			// 
-			this->listview->Columns->AddRange(gcnew cli::array< System::Windows::Forms::ColumnHeader^  >(3) {
+			this->listview->Columns->AddRange(gcnew cli::array< System::Windows::Forms::ColumnHeader^  >(4) {
 				this->service, this->login,
-					this->password
+					this->password, this->created_changed_date
 			});
 			this->listview->Font = (gcnew System::Drawing::Font(L"Calibri", 11.25F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(204)));
@@ -103,7 +113,7 @@ namespace PasswordManager {
 			this->listview->Margin = System::Windows::Forms::Padding(4, 3, 4, 3);
 			this->listview->MultiSelect = false;
 			this->listview->Name = L"listview";
-			this->listview->Size = System::Drawing::Size(460, 579);
+			this->listview->Size = System::Drawing::Size(599, 579);
 			this->listview->TabIndex = 0;
 			this->listview->UseCompatibleStateImageBehavior = false;
 			this->listview->View = System::Windows::Forms::View::Details;
@@ -112,7 +122,7 @@ namespace PasswordManager {
 			// service
 			// 
 			this->service->Text = L"Сервис";
-			this->service->Width = 153;
+			this->service->Width = 120;
 			// 
 			// login
 			// 
@@ -122,14 +132,19 @@ namespace PasswordManager {
 			// password
 			// 
 			this->password->Text = L"Пароль";
-			this->password->Width = 300;
+			this->password->Width = 130;
+			// 
+			// created_changed_date
+			// 
+			this->created_changed_date->Text = L"Дата создания/изменения";
+			this->created_changed_date->Width = 190;
 			// 
 			// create_button
 			// 
 			this->create_button->FlatStyle = System::Windows::Forms::FlatStyle::System;
 			this->create_button->Font = (gcnew System::Drawing::Font(L"Calibri Light", 14.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(204)));
-			this->create_button->Location = System::Drawing::Point(495, 12);
+			this->create_button->Location = System::Drawing::Point(640, 12);
 			this->create_button->Margin = System::Windows::Forms::Padding(4, 3, 4, 3);
 			this->create_button->Name = L"create_button";
 			this->create_button->Size = System::Drawing::Size(145, 41);
@@ -143,7 +158,7 @@ namespace PasswordManager {
 			this->change_button->FlatStyle = System::Windows::Forms::FlatStyle::System;
 			this->change_button->Font = (gcnew System::Drawing::Font(L"Calibri Light", 14.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(204)));
-			this->change_button->Location = System::Drawing::Point(495, 69);
+			this->change_button->Location = System::Drawing::Point(640, 69);
 			this->change_button->Margin = System::Windows::Forms::Padding(4, 3, 4, 3);
 			this->change_button->Name = L"change_button";
 			this->change_button->Size = System::Drawing::Size(145, 41);
@@ -157,7 +172,7 @@ namespace PasswordManager {
 			this->delete_button->FlatStyle = System::Windows::Forms::FlatStyle::System;
 			this->delete_button->Font = (gcnew System::Drawing::Font(L"Calibri Light", 14.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(204)));
-			this->delete_button->Location = System::Drawing::Point(495, 127);
+			this->delete_button->Location = System::Drawing::Point(640, 127);
 			this->delete_button->Margin = System::Windows::Forms::Padding(4, 3, 4, 3);
 			this->delete_button->Name = L"delete_button";
 			this->delete_button->Size = System::Drawing::Size(145, 41);
@@ -171,7 +186,7 @@ namespace PasswordManager {
 			this->reset_button->FlatStyle = System::Windows::Forms::FlatStyle::System;
 			this->reset_button->Font = (gcnew System::Drawing::Font(L"Calibri Light", 14.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(204)));
-			this->reset_button->Location = System::Drawing::Point(495, 550);
+			this->reset_button->Location = System::Drawing::Point(640, 550);
 			this->reset_button->Margin = System::Windows::Forms::Padding(4, 3, 4, 3);
 			this->reset_button->Name = L"reset_button";
 			this->reset_button->Size = System::Drawing::Size(145, 41);
@@ -180,24 +195,39 @@ namespace PasswordManager {
 			this->reset_button->UseVisualStyleBackColor = true;
 			this->reset_button->Click += gcnew System::EventHandler(this, &MainWindow::reset_button_Click);
 			// 
-			// sortButton
+			// SortLabel
 			// 
-			this->sortButton->Font = (gcnew System::Drawing::Font(L"Calibri Light", 14.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+			this->SortLabel->AutoSize = true;
+			this->SortLabel->Font = (gcnew System::Drawing::Font(L"Calibri Light", 14.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(204)));
-			this->sortButton->Location = System::Drawing::Point(495, 183);
-			this->sortButton->Name = L"sortButton";
-			this->sortButton->Size = System::Drawing::Size(145, 54);
-			this->sortButton->TabIndex = 5;
-			this->sortButton->Text = L"Сортировать по алфавиту";
-			this->sortButton->UseVisualStyleBackColor = true;
-			this->sortButton->Click += gcnew System::EventHandler(this, &MainWindow::button1_Click);
+			this->SortLabel->Location = System::Drawing::Point(645, 194);
+			this->SortLabel->Name = L"SortLabel";
+			this->SortLabel->Size = System::Drawing::Size(140, 23);
+			this->SortLabel->TabIndex = 5;
+			this->SortLabel->Text = L"Сортировать по:";
+			// 
+			// chooseSort_CB
+			// 
+			this->chooseSort_CB->Font = (gcnew System::Drawing::Font(L"Calibri Light", 12, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(204)));
+			this->chooseSort_CB->FormattingEnabled = true;
+			this->chooseSort_CB->Items->AddRange(gcnew cli::array< System::Object^  >(4) {
+				L"Алфавиту", L"Алфавиту(обратная)", L"Дате",
+					L"Дате(обратная)"
+			});
+			this->chooseSort_CB->Location = System::Drawing::Point(640, 220);
+			this->chooseSort_CB->Name = L"chooseSort_CB";
+			this->chooseSort_CB->Size = System::Drawing::Size(145, 27);
+			this->chooseSort_CB->TabIndex = 6;
+			this->chooseSort_CB->SelectedIndexChanged += gcnew System::EventHandler(this, &MainWindow::chooseSort_CB_SelectedIndexChanged);
 			// 
 			// MainWindow
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(7, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
-			this->ClientSize = System::Drawing::Size(663, 611);
-			this->Controls->Add(this->sortButton);
+			this->ClientSize = System::Drawing::Size(811, 611);
+			this->Controls->Add(this->chooseSort_CB);
+			this->Controls->Add(this->SortLabel);
 			this->Controls->Add(this->reset_button);
 			this->Controls->Add(this->delete_button);
 			this->Controls->Add(this->change_button);
@@ -215,6 +245,7 @@ namespace PasswordManager {
 			this->Activated += gcnew System::EventHandler(this, &MainWindow::MainWindow_Activated);
 			this->Load += gcnew System::EventHandler(this, &MainWindow::MainWindow_Load);
 			this->ResumeLayout(false);
+			this->PerformLayout();
 
 		}
 #pragma endregion
@@ -267,13 +298,6 @@ namespace PasswordManager {
 			changewin->ShowDialog();
 		}
 
-		// Сортировка данных по алфавиту
-		private: System::Void button1_Click(System::Object^ sender, System::EventArgs^ e) 
-		{
-			CreatePassword createpass;
-			createpass.AlphabetSort();
-			update_window();
-		}
 
 		// Кнопка удаления элемента
 		private: System::Void delete_button_Click(System::Object^ sender, System::EventArgs^ e)
@@ -293,13 +317,14 @@ namespace PasswordManager {
 			createpass.Service = selectedItem->SubItems[0]->Text;
 			createpass.login = selectedItem->SubItems[1]->Text;
 			createpass.password = selectedItem->SubItems[2]->Text;
+			createpass.date = selectedItem->SubItems[3]->Text;
 
 			// Потдверждение
 			System::Windows::Forms::DialogResult result = MessageBox::Show("Вы уверены, что хотите удалить данные от сервиса "+createpass.Service+" ?", "Подтверждение", MessageBoxButtons::YesNo, MessageBoxIcon::Question);
 			if (result == System::Windows::Forms::DialogResult::No)	return;
 
 
-			if (!validator.FindData(createpass.Service,createpass.login,createpass.password))
+			if (!validator.FindData(createpass.Service,createpass.login,createpass.password,createpass.date))
 			{
 				MessageBox::Show("Ошибка! Не удалось совершить удаление, так как невозможно найти данные в файле!", "Ошибка", MessageBoxButtons::OK, MessageBoxIcon::Error);
 				return;
@@ -322,6 +347,18 @@ namespace PasswordManager {
 				MessageBox::Show("База данных успешно очищена!", "Информация", MessageBoxButtons::OK, MessageBoxIcon::Asterisk);
 			}
 		}
+
+	// Функция выбора определённой сортировки
+	private: System::Void chooseSort_CB_SelectedIndexChanged(System::Object^ sender, System::EventArgs^ e)
+	{
+		CreatePassword createpass;
+		String^ selectedItem = chooseSort_CB->SelectedItem->ToString();
+		if (selectedItem == "Алфавиту") createpass.AlphabetSort();
+		if (selectedItem == "Алфавиту(обратная)") createpass.ReversedAlphabetSort();
+		if (selectedItem == "Дате") createpass.DateSort();
+		if (selectedItem == "Дате(обратная)") createpass.ReversedDateSort();
+		update_window();
+	}
 
 	// Функции обновления таблицы с данными
 	void update_window()
@@ -353,6 +390,7 @@ namespace PasswordManager {
 			ListViewItem^ item = gcnew ListViewItem(parts[0]);
 			item->SubItems->Add(parts[1]);
 			item->SubItems->Add(parts[2]);
+			item->SubItems->Add(parts[3]);
 			listview->Items->Add(item);
 		}
 		reader->Close();
@@ -366,6 +404,7 @@ namespace PasswordManager {
 	{
 		update_window();
 	}
+
 
 };
 }

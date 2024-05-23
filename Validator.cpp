@@ -1,5 +1,6 @@
 #include <fstream>
 
+
 #include "Validator.h"
 
 using namespace System;
@@ -42,6 +43,35 @@ bool Validator::isValidLine(String^ line)
     return words->Length == 3;
 }
 
+// Метод проверки даты в файле
+bool Validator::date_validation(String^ line)
+{
+    // Проверка длины строки
+    if (line->Length != 10) return false;
+
+    array<String^>^ parts = line->Split('.');
+    if (parts->Length != 3) return false;
+
+    // Проверка длины каждой части
+    if (parts[0]->Length != 2 || parts[1]->Length != 2 || parts[2]->Length != 4) return false;
+
+    int day, month, year;
+    if (!Int32::TryParse(parts[0], day) || !Int32::TryParse(parts[1], month) || !Int32::TryParse(parts[2], year))
+        return false;
+
+    // Проверка на отрицательные значения и нули
+    if (day <= 0 || month <= 0 || year <= 0) return false;
+
+    // Проверка диапазонов значений
+    if (month < 1 || month > 12) return false;
+
+    // Проверка дня в зависимости от месяца
+    int daysInMonth[] = { 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
+    if (day < 1 || day > daysInMonth[month - 1]) return false;
+
+    return true;
+}
+
 // Реализация метода проверки валидности данных файла
 bool Validator::validateFileData()
 {
@@ -52,7 +82,7 @@ bool Validator::validateFileData()
         String^ line = reader->ReadLine();
         array<String^>^ words = line->Split(' ');
 
-        if (!(words->Length == 3))
+        if (!(words->Length == 4))
         {
             reader->Close();
             return false;
@@ -64,6 +94,11 @@ bool Validator::validateFileData()
                 reader->Close();
                 return false;
             }
+        }
+        if (!date_validation(words[3]))
+        {
+            reader->Close();
+            return false;
         }
     }
     reader->Close();
@@ -88,7 +123,7 @@ bool Validator::isDigit(String^ input_str)
 }
 
 // Проверка на существование выделенных данных в файле
-bool Validator::FindData(String^ Service, String^ login, String^ password)
+bool Validator::FindData(String^ Service, String^ login, String^ password,String^ date)
 {
     StreamReader^ reader = gcnew StreamReader(filepath);
     while (!reader->EndOfStream)
@@ -96,7 +131,7 @@ bool Validator::FindData(String^ Service, String^ login, String^ password)
         String^ line = reader->ReadLine();
         array<String^>^ words = line->Split(' ');
 
-        if (words[0] == Service && words[1] == login && words[2] == password)
+        if (words[0] == Service && words[1] == login && words[2] == password && words[3]==date)
         {
             reader->Close();
             return true;

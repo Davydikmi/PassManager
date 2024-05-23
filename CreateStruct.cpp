@@ -12,10 +12,14 @@ using namespace System::Windows::Forms;
 // Реализация метода WriteToFile
 void CreatePassword::WriteToFile()
 {
+    // Получение текущей даты
+    DateTime currentDateOnly = DateTime::Now.Date;
+    String^ currentDateStr = currentDateOnly.ToString("dd.MM.yyyy");
+
     // Открываем файл для записи (добавление к концу файла)
     StreamWriter^ writer = gcnew StreamWriter(filepath, true);
 
-    String^ line = Service + " " + login + " " + password;
+    String^ line = Service + " " + login + " " + password + " " + currentDateStr;
     writer->WriteLine(line);
     writer->Close();
 }
@@ -63,6 +67,7 @@ void CreatePassword::random_generating(bool Digits, bool Uppercase, bool Lowerca
     }
 }
 
+// Метод очистки файла
 void CreatePassword::ClearFile()
 {
     StreamWriter^ writer = gcnew StreamWriter(filepath,false);
@@ -71,6 +76,7 @@ void CreatePassword::ClearFile()
     writer->Close();
 }
 
+// Удаление выделенных пользователем данных
 void CreatePassword::DeleteData()
 {
     List<String^>^ lines = gcnew List<String^>();
@@ -80,7 +86,7 @@ void CreatePassword::DeleteData()
     while (!reader->EndOfStream)
     {
         String^ line = reader->ReadLine();
-        String^ record = Service + " " + login + " " + password;
+        String^ record = Service + " " + login + " " + password + " " + date;
 
         if (line != record)
         {
@@ -99,6 +105,7 @@ void CreatePassword::DeleteData()
     writer->Close();
 }
 
+// Изменение данных
 void CreatePassword::ChangeData(String^ changedService, String^ changedLogin, String^ changedPassword)
 {
     List<String^>^ lines = gcnew List<String^>();
@@ -112,10 +119,15 @@ void CreatePassword::ChangeData(String^ changedService, String^ changedLogin, St
         // Замена данных в массиве
         if (words[0] == Service && words[1] == login && words[2] == password)
         {
+            //Получение текущей даты изменения данных
+            DateTime currentDateOnly = DateTime::Now.Date;
+            String^ currentDateStr = currentDateOnly.ToString("dd.MM.yyyy");
+
             Service = changedService;
             login = changedLogin;
             password = changedPassword;
-            line = Service + " " + login + " " + password;
+
+            line = Service + " " + login + " " + password + " " + currentDateStr;
         }
         lines->Add(line);
     }
@@ -131,8 +143,6 @@ void CreatePassword::ChangeData(String^ changedService, String^ changedLogin, St
 // Сортировка данных по алфавиту
 void CreatePassword::AlphabetSort()
 {
-    String^ Alphabet = "AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz_0123456789!@#$%^&?~=*[]{};:<>,.|`-";
-    int size = 0;
     List<String^>^ temp_lines = gcnew List<String^>();
     List<String^>^ lines = gcnew List<String^>();
     StreamReader^ reader = gcnew StreamReader(filepath);
@@ -142,7 +152,6 @@ void CreatePassword::AlphabetSort()
         String^ line = reader->ReadLine();
         array<String^>^ words = line->Split(' ');
         temp_lines->Add(line);
-        size++;
     }
     reader->Close();
 
@@ -158,8 +167,40 @@ void CreatePassword::AlphabetSort()
         }
     }
 
+    // Перезапись отсортированных данных
+    StreamWriter^ writer = gcnew StreamWriter(filepath, false);
+    for each (String ^ line in lines) writer->WriteLine(line);
 
+    writer->Close();
+}
+void CreatePassword::ReversedAlphabetSort()
+{
+    int size = 0;
+    List<String^>^ temp_lines = gcnew List<String^>();
+    List<String^>^ lines = gcnew List<String^>();
+    StreamReader^ reader = gcnew StreamReader(filepath);
 
+    while (!reader->EndOfStream)
+    {
+        String^ line = reader->ReadLine();
+        array<String^>^ words = line->Split(' ');
+        temp_lines->Add(line);
+        size++;
+    }
+    reader->Close();
+
+    // Сортировка данных по алфавиту(в обратом порядке)
+    for (int i = Alphabet->Length - 1; i >= 0; i--)
+    {
+        Char symb = Alphabet[i];
+        for each (String ^ line in temp_lines)
+        {
+            if (line[0] == symb)
+            {
+                lines->Add(line);
+            }
+        }
+    }
 
     // Перезапись отсортированных данных
     StreamWriter^ writer = gcnew StreamWriter(filepath, false);
@@ -167,3 +208,139 @@ void CreatePassword::AlphabetSort()
 
     writer->Close();
 }
+
+// Сортировка данных по дате
+void CreatePassword::DateSort()
+{
+    List<String^>^ temp_lines = gcnew List<String^>();
+    List<String^>^ lines = gcnew List<String^>();
+    StreamReader^ reader = gcnew StreamReader(filepath);
+
+    // Чтение данных из файла и сохранение во временном списке
+    while (!reader->EndOfStream)
+    {
+        String^ line = reader->ReadLine();
+        temp_lines->Add(line);
+    }
+    reader->Close();
+
+    // Алгоритм сортировки
+    for (int i = 0; i < temp_lines->Count; i++)
+    {
+        // Извлечение даты из строки
+        String^ line = temp_lines[i];
+        array<String^>^ parts = line->Split(' ');
+        String^ dateString = parts[3]; // Дата на четвёртом месте
+        array<String^>^ dateParts = dateString->Split('.'); // Разделение на компоненты даты
+        int day = Int32::Parse(dateParts[0]);
+        int month = Int32::Parse(dateParts[1]);
+        int year = Int32::Parse(dateParts[2]);
+
+        // Процедура сортировки вставками
+        int j = i;
+        while (j > 0 && CompareDates(temp_lines[j - 1], day, month, year) > 0)
+        {
+            temp_lines[j] = temp_lines[j - 1];
+            j--;
+        }
+        temp_lines[j] = line;
+    }
+
+    // Перезапись отсортированных данных в список lines
+    for each (String ^ line in temp_lines) lines->Add(line);
+    
+
+    // Перезапись отсортированных данных в файл
+    StreamWriter^ writer = gcnew StreamWriter(filepath, false);
+    for each (String ^ line in lines) writer->WriteLine(line);
+    writer->Close();
+}
+int CreatePassword::CompareDates(String^ line, int day, int month, int year)
+{
+    array<String^>^ parts = line->Split(' ');
+    String^ dateString = parts[3]; // Дата на четвёртом месте
+    array<String^>^ dateParts = dateString->Split('.'); // Разделение на компоненты даты
+    int day2 = Int32::Parse(dateParts[0]);
+    int month2 = Int32::Parse(dateParts[1]);
+    int year2 = Int32::Parse(dateParts[2]);
+
+    if (year != year2) return year - year2;
+    else if (month != month2) return month - month2;
+    else return day - day2;
+}
+
+void CreatePassword::ReversedDateSort()
+{
+    List<String^>^ temp_lines = gcnew List<String^>();
+    List<String^>^ lines = gcnew List<String^>();
+    StreamReader^ reader = gcnew StreamReader(filepath);
+
+    // Чтение данных из файла и сохранение во временном списке
+    while (!reader->EndOfStream)
+    {
+        String^ line = reader->ReadLine();
+        temp_lines->Add(line);
+    }
+    reader->Close();
+
+    // Алгоритм сортировки
+    for (int i = 0; i < temp_lines->Count; i++)
+    {
+        // Извлечение даты из строки
+        String^ line = temp_lines[i];
+        array<String^>^ parts = line->Split(' ');
+        String^ dateString = parts[3]; // Дата на четвёртом месте
+        array<String^>^ dateParts = dateString->Split('.'); // Разделение на компоненты даты
+        int day = Int32::Parse(dateParts[0]);
+        int month = Int32::Parse(dateParts[1]);
+        int year = Int32::Parse(dateParts[2]);
+
+        // Процедура сортировки вставками
+        int j = i;
+        while (j > 0 && CompareReversedDates(temp_lines[j - 1], day, month, year) < 0)
+        {
+            temp_lines[j] = temp_lines[j - 1];
+            j--;
+        }
+        temp_lines[j] = line;
+    }
+
+    // Перезапись отсортированных данных в список lines
+    for each (String ^ line in temp_lines)
+    {
+        lines->Add(line);
+    }
+
+    // Перезапись отсортированных данных в файл
+    StreamWriter^ writer = gcnew StreamWriter(filepath, false);
+    for each (String ^ line in lines)
+    {
+        writer->WriteLine(line);
+    }
+    writer->Close();
+}
+
+// Функция сравнения дат для сортировки вставками по убыванию
+int CreatePassword::CompareReversedDates(String^ line, int day, int month, int year)
+{
+    array<String^>^ parts = line->Split(' ');
+    String^ dateString = parts[3]; // Дата на четвёртом месте
+    array<String^>^ dateParts = dateString->Split('.'); // Разделение на компоненты даты
+    int day2 = Int32::Parse(dateParts[0]);
+    int month2 = Int32::Parse(dateParts[1]);
+    int year2 = Int32::Parse(dateParts[2]);
+
+    if (year != year2)
+    {
+        return year2 - year;
+    }
+    else if (month != month2)
+    {
+        return month2 - month;
+    }
+    else
+    {
+        return day2 - day;
+    }
+}
+
