@@ -212,49 +212,39 @@ void CreatePassword::ReversedAlphabetSort()
 // Сортировка данных по дате
 void CreatePassword::DateSort()
 {
-    List<String^>^ temp_lines = gcnew List<String^>();
-    List<String^>^ lines = gcnew List<String^>();
+    Dictionary<DateTime, String^>^ datesWithLines = gcnew Dictionary<DateTime, String^>();
     StreamReader^ reader = gcnew StreamReader(filepath);
 
-    // Чтение данных из файла и сохранение во временном списке
+    // Чтение данных из файла и сохранение во временном словаре
     while (!reader->EndOfStream)
     {
         String^ line = reader->ReadLine();
-        temp_lines->Add(line);
+        array<String^>^ parts = line->Split(' ');
+        if (parts->Length >= 4)
+        {
+            String^ dateString = parts[3];
+            DateTime dt;
+            if (DateTime::TryParseExact(dateString, "dd.MM.yyyy", System::Globalization::CultureInfo::InvariantCulture, System::Globalization::DateTimeStyles::None, dt))
+            {
+                datesWithLines[dt] = line;
+            }
+        }
     }
     reader->Close();
 
-    // Алгоритм сортировки
-    for (int i = 0; i < temp_lines->Count; i++)
-    {
-        // Извлечение даты из строки
-        String^ line = temp_lines[i];
-        array<String^>^ parts = line->Split(' ');
-        String^ dateString = parts[3]; // Дата на четвёртом месте
-        array<String^>^ dateParts = dateString->Split('.'); // Разделение на компоненты даты
-        int day = Int32::Parse(dateParts[0]);
-        int month = Int32::Parse(dateParts[1]);
-        int year = Int32::Parse(dateParts[2]);
-
-        // Процедура сортировки вставками
-        int j = i;
-        while (j > 0 && CompareDates(temp_lines[j - 1], day, month, year) > 0)
-        {
-            temp_lines[j] = temp_lines[j - 1];
-            j--;
-        }
-        temp_lines[j] = line;
-    }
-
-    // Перезапись отсортированных данных в список lines
-    for each (String ^ line in temp_lines) lines->Add(line);
-    
+    // Сортировка списка дат
+    List<DateTime>^ sortedDates = gcnew List<DateTime>(datesWithLines->Keys);
+    sortedDates->Sort();
 
     // Перезапись отсортированных данных в файл
     StreamWriter^ writer = gcnew StreamWriter(filepath, false);
-    for each (String ^ line in lines) writer->WriteLine(line);
+    for each (DateTime dt in sortedDates)
+    {
+        writer->WriteLine(datesWithLines[dt]);
+    }
     writer->Close();
 }
+
 int CreatePassword::CompareDates(String^ line, int day, int month, int year)
 {
     array<String^>^ parts = line->Split(' ');
@@ -268,7 +258,6 @@ int CreatePassword::CompareDates(String^ line, int day, int month, int year)
     else if (month != month2) return month - month2;
     else return day - day2;
 }
-
 void CreatePassword::ReversedDateSort()
 {
     List<String^>^ temp_lines = gcnew List<String^>();
@@ -319,8 +308,6 @@ void CreatePassword::ReversedDateSort()
     }
     writer->Close();
 }
-
-// Функция сравнения дат для сортировки вставками по убыванию
 int CreatePassword::CompareReversedDates(String^ line, int day, int month, int year)
 {
     array<String^>^ parts = line->Split(' ');
