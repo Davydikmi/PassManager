@@ -29,8 +29,6 @@ namespace PasswordManager
         void AlphabetSort();
         void ReversedAlphabetSort();
         void DateSort();
-        int CompareDates(String^ line, int day, int month, int year);
         void ReversedDateSort();
-        int CompareReversedDates(String^ line, int day, int month, int year);
     };
 }
